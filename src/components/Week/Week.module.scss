@@ -1,0 +1,16 @@
+.Week {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.Cols {
+  flex: 1;
+  min-width: 137px;
+  text-align: center;
+}
+
+.WeekName {
+  padding: 5px;
+}
