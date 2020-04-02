@@ -1,15 +1,25 @@
 import React from "react";
-import "./App.css";
-import Planner from "./components/Planner";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "./App.scss";
+import Home from "./pages/Home/Home";
+import Register from "./pages/Register/Register";
+import { Container } from '@material-ui/core';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header"></header>
+      <Router>
+        <header className="App-header"></header>
 
-      <main>
-        <Planner />
-      </main>
+        <main>
+          <Container>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/register" component={Register} />
+            </Switch>
+          </Container>
+        </main>
+      </Router>
     </div>
   );
 }
