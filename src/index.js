@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
+import { StateProvider } from "./context/StateContext";
+import { initialState, reducer } from "./reducers/stateContext";
 
 Amplify.configure({
   Auth: {
@@ -16,7 +18,9 @@ Amplify.configure({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <App />
+    </StateProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
