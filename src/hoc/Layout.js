@@ -60,6 +60,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginTop: theme.spacing(3 * 3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -73,7 +74,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0
   },
   container: {
-    marginTop: theme.spacing(2 * 4)
+    marginTop: theme.spacing(2)
   },
   drawer: {
     width: drawerWidth,
