@@ -2,6 +2,7 @@ import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { useStateValue } from "../context/StateContext";
+import Axios from "../shared/requestsConfig";
 
 const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
   const [, dispatch] = useStateValue();
@@ -10,8 +11,11 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
 
   const onLoad = async () => {
     try {
-      await Auth.currentSession();
+      const session = await Auth.currentSession();
       const user = await Auth.currentAuthenticatedUser();
+      Axios.defaults.headers.common[
+        "Authorization"
+      ] = session.getIdToken().jwtToken;
       setIsAuthenticating(false);
       setAuthenticated(true);
       dispatch({ type: "session_authenticated", user });
@@ -30,13 +34,13 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
     !isAuthenticating && (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           authenticated ? (
             <Component {...props} />
           ) : (
             <Redirect
               to={{
-                pathname: "/login"
+                pathname: "/login",
               }}
             />
           )
