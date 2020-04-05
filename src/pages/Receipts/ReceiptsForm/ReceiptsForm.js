@@ -10,7 +10,11 @@ import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { createReceipt, getReceipt, updateReceipt } from "../../../shared/receiptApi";
+import {
+  createReceipt,
+  getReceipt,
+  updateReceipt,
+} from "../../../shared/receiptApi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       maxWidth: 560,
     },
+  },
+  form: {
+    marginTop: theme.spacing(2),
   },
   buttonContainer: {
     marginTop: theme.spacing(4),
@@ -45,15 +52,12 @@ const ReceiptsForm = () => {
 
   useEffect(() => {
     if (id) {
-      getReceipt(id).then((response) => {
-        console.log("passou aqui");
-        formik.setValues(response.data);
-      });
+      getReceipt(id).then((response) => formik.setValues(response.data));
     }
   }, []);
 
-  const handleToSignUp = () => {
-    history.push("/");
+  const goBack = () => {
+    history.push("/receipts");
   };
 
   const formik = useFormik({
@@ -64,9 +68,19 @@ const ReceiptsForm = () => {
     validate,
     onSubmit: async (values) => {
       if (id) {
-        updateReceipt(id, values);
+        try {
+          const data = await updateReceipt(id, values);
+          goBack();
+        } catch (err) {
+          console.log(err);
+        }
       } else {
-        createReceipt(values);
+        try {
+          const data = await createReceipt(values);
+          goBack();
+        } catch (err) {
+          console.log(err);
+        }
       }
     },
   });
@@ -92,7 +106,6 @@ const ReceiptsForm = () => {
               <Input
                 id="ff-name"
                 name="receiptName"
-                autoComplete="nickname"
                 aria-describedby="ht-name"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
@@ -119,7 +132,7 @@ const ReceiptsForm = () => {
             type="button"
             color="primary"
             className={classes.buttonBack}
-            onClick={handleToSignUp}
+            onClick={goBack}
           >
             Cancelar
           </Button>
