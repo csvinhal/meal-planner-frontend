@@ -1,20 +1,22 @@
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Paper from "@material-ui/core/Paper";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+  Paper,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import {
-  createReceipt,
-  getReceipt,
-  updateReceipt,
-} from "../../../shared/receiptApi";
+  createRecipe,
+  getRecipe,
+  updateRecipe,
+} from "../../../shared/recipesApi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,45 +40,45 @@ const useStyles = makeStyles((theme) => ({
 
 const validate = (values) => {
   const errors = {};
-  if (!values.receiptName) {
-    errors.receiptName = "O campo é obrigatório";
+  if (!values.recipeName) {
+    errors.recipeName = "O campo é obrigatório";
   }
 
   return errors;
 };
 
-const ReceiptsForm = () => {
+const RecipesForm = () => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      getReceipt(id).then((response) => formik.setValues(response.data));
+      getRecipe(id).then((response) => formik.setValues(response.data));
     }
   }, []);
 
   const goBack = () => {
-    history.push("/receipts");
+    history.push("/recipes");
   };
 
   const formik = useFormik({
     initialValues: {
       id: "",
-      receiptName: "",
+      recipeName: "",
     },
     validate,
     onSubmit: async (values) => {
       if (id) {
         try {
-          const data = await updateReceipt(id, values);
+          const data = await updateRecipe(id, values);
           goBack();
         } catch (err) {
           console.log(err);
         }
       } else {
         try {
-          const data = await createReceipt(values);
+          const data = await createRecipe(values);
           goBack();
         } catch (err) {
           console.log(err);
@@ -100,20 +102,20 @@ const ReceiptsForm = () => {
           <Grid item xs={12}>
             <FormControl
               fullWidth
-              error={formik.touched.receiptName && !!formik.errors.receiptName}
+              error={formik.touched.recipeName && !!formik.errors.recipeName}
             >
               <InputLabel htmlFor="ff-name">Nome da receita</InputLabel>
               <Input
                 id="ff-name"
-                name="receiptName"
+                name="recipeName"
                 aria-describedby="ht-name"
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.receiptName}
+                value={formik.values.recipeName}
               />
-              {formik.touched.receiptName && formik.errors.receiptName ? (
+              {formik.touched.recipeName && formik.errors.recipeName ? (
                 <FormHelperText id="ht-name" error>
-                  {formik.errors.receiptName}
+                  {formik.errors.recipeName}
                 </FormHelperText>
               ) : null}
             </FormControl>
@@ -142,4 +144,4 @@ const ReceiptsForm = () => {
   );
 };
 
-export default ReceiptsForm;
+export default RecipesForm;

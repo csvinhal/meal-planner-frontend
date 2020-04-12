@@ -43,7 +43,7 @@ const ListItems = ({ handleDrawerClose }) => {
         <ListItem
           button
           component={Link}
-          to="/receipts"
+          to="/recipes"
           selected={selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
         >

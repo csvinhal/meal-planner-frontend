@@ -25,13 +25,13 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const ReceiptCard = ({ receipt }) => {
+const RecipeCard = ({ recipe }) => {
   const classes = useStyles();
   const { path } = useRouteMatch();
   const history = useHistory();
 
   const handleEdit = () => {
-    history.push(`${path}/${receipt.id}`);
+    history.push(`${path}/${recipe.id}`);
   };
 
   const handleRemove = () => {
@@ -44,11 +44,11 @@ const ReceiptCard = ({ receipt }) => {
         <CardMedia
           className={classes.media}
           image={imageNotFound}
-          title={`Receita de ${receipt.receiptName}`}
+          title={`Receita de ${recipe.recipeName}`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {receipt.receiptName}
+            {recipe.recipeName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Lizards are a widespread group of squamate reptiles, with over 6,000
@@ -68,12 +68,12 @@ const ReceiptCard = ({ receipt }) => {
   );
 };
 
-ReceiptCard.propTypes = {
-  receipt: PropTypes.shape({
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape({
     id: PropTypes.string,
-    receiptName: PropTypes.string,
+    recipeName: PropTypes.string,
     image: PropTypes.string,
   }),
 };
 
-export default ReceiptCard;
+export default RecipeCard;

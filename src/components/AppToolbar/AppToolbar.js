@@ -1,10 +1,12 @@
-import AppBar from "@material-ui/core/AppBar";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import {
+  AppBar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -15,34 +17,34 @@ import { useHistory } from "react-router-dom";
 import { useStateValue } from "../../context/StateContext";
 import Sidenav from "../Sidenav/Sidenav";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
-      display: "flex"
-    }
+      display: "flex",
+    },
   },
   sectionMobile: {
     display: "flex",
     [theme.breakpoints.up("md")]: {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 }));
 
 const AppToolbar = () => {
@@ -65,11 +67,11 @@ const AppToolbar = () => {
     handleMobileMenuClose();
   };
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuOpen = event => {
+  const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 

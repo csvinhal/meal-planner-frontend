@@ -1,11 +1,9 @@
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import { Button, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { fetchAllReceipts } from "../../../shared/receiptApi";
-import ReceiptCard from "./ReceiptCard/ReceiptCard";
+import { fetchAllRecipes } from "../../../shared/recipesApi";
+import RecipeCard from "./RecipeCard/RecipeCard";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -15,21 +13,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
 }));
-const ReceiptsList = () => {
-  const [receipts, setReceipts] = useState([]);
+const RecipesList = () => {
+  const [recipes, setRecipes] = useState([]);
   const [offset, setOffset] = useState(0);
   const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
-    fetchAllReceipts(10, offset).then((response) => {
+    fetchAllRecipes(10, offset).then((response) => {
       const { data } = response;
-      setReceipts((p) => [...p, ...data]);
+      setRecipes((p) => [...p, ...data]);
     });
   }, [offset]);
 
   const handlerAdd = () => {
-    history.push("/receipts/add")
+    history.push("/recipes/add");
   };
 
   return (
@@ -41,8 +39,8 @@ const ReceiptsList = () => {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          {receipts.map((receipt) => (
-            <ReceiptCard key={receipt.id} receipt={receipt} />
+          {recipes.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
         </Grid>
       </Grid>
@@ -50,4 +48,4 @@ const ReceiptsList = () => {
   );
 };
 
-export default ReceiptsList;
+export default RecipesList;
