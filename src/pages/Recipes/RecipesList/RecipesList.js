@@ -22,7 +22,7 @@ const RecipesList = () => {
   useEffect(() => {
     fetchAllRecipes(10, offset).then((response) => {
       const { data } = response;
-      setRecipes((p) => [...p, ...data]);
+      setRecipes((p) => [...p, ...data.results]);
     });
   }, [offset]);
 
@@ -38,7 +38,7 @@ const RecipesList = () => {
             Adicionar
           </Button>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={4}>
           {recipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

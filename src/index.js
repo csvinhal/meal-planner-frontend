@@ -12,7 +12,15 @@ Amplify.configure({
     mandatorySignId: true,
     region: process.env.REACT_APP_COGNITO_REGION,
     userPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
-    userPoolWebClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID
+    userPoolWebClientId: process.env.REACT_APP_COGNITO_APP_CLIENT_ID,
+    oauth: {
+      domain: process.env.REACT_APP_COGNITO_DOMAIN,
+      scope: process.env.REACT_APP_COGNITO_SCOPE,
+      redirectSignIn: process.env.REACT_APP_COGNITO_REDIRECT_SIGN_IN,
+      redirectSignOut: process.env.REACT_APP_COGNITO_REDIRECT_SIGN_OUT,
+      responseType: process.env.REACT_APP_COGNITO_RESPONSE_TYPE
+
+    }
   }
 });
 
