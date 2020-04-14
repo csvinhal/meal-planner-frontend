@@ -8,13 +8,15 @@ import RecipesList from "./RecipesList/RecipesList";
 const Recipes = ({ match, location, history }) => {
   const { path } = useRouteMatch();
   return (
-    <Layout>
-      <Switch>
-        <PrivateRoute path={`${path}/add`} component={RecipesForm} exact />
-        <PrivateRoute path={`${path}/:id`} component={RecipesForm} exact />
-        <PrivateRoute path={`${path}`} component={RecipesList} exact />
-      </Switch>
-    </Layout>
+    <div className="page">
+      <Layout>
+        <Switch>
+          <PrivateRoute path={`${path}/add`} component={RecipesForm} exact />
+          <PrivateRoute path={`${path}/:id`} component={RecipesForm} exact />
+          <PrivateRoute path={`${path}`} component={RecipesList} exact />
+        </Switch>
+      </Layout>
+    </div>
   );
 };
 

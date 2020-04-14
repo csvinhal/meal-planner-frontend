@@ -9,44 +9,50 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import PersonOutline from "@material-ui/icons/PersonOutline";
+import { Auth } from "aws-amplify";
+import clsx from "clsx";
 import { useFormik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    marginRight: "auto",
-    marginLeft: "auto",
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     marginTop: theme.spacing(2 * 8),
-    [theme.breakpoints.up("md")]: {
-      maxWidth: 560
-    }
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: 560,
+      marginRight: "auto",
+      marginLeft: "auto",
+    },
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     marginTop: theme.spacing(),
-    width: "100%"
+    width: "100%",
   },
   buttonContainer: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   buttonBack: {
-    marginLeft: theme.spacing(2)
-  }
+    marginLeft: theme.spacing(1),
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (!values.username) {
     errors.username = "O campo é obrigatório";
@@ -83,18 +89,18 @@ const Register = () => {
       username: "",
       email: "",
       password: "",
-      passwordConfirm: ""
+      passwordConfirm: "",
     },
     validate,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       const { username, password, email } = values;
       try {
         const signUpResponse = await Auth.signUp({
           username,
           password,
           attributes: {
-            email
-          }
+            email,
+          },
         });
         console.log(signUpResponse);
         history.push("/");
@@ -103,7 +109,7 @@ const Register = () => {
         !error.message ? (err = { message: error }) : (err = error);
         alert.log(err.message);
       }
-    }
+    },
   });
 
   const handleBackToSignIn = () => {
@@ -111,7 +117,7 @@ const Register = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={clsx("page", classes.root)}>
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <PersonOutline />
@@ -135,7 +141,8 @@ const Register = () => {
                 <Input
                   id="ff-username"
                   name="username"
-                  autoComplete="nickname"
+                  type="text"
+                  autoComplete="username"
                   aria-describedby="ht-username"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -157,6 +164,7 @@ const Register = () => {
                 <InputLabel htmlFor="ff-email">E-mail</InputLabel>
                 <Input
                   id="ff-email"
+                  type="email"
                   name="email"
                   autoComplete="email"
                   aria-describedby="ht-email"

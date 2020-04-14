@@ -13,9 +13,9 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
     try {
       const session = await Auth.currentSession();
       const user = await Auth.currentAuthenticatedUser();
-      Axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${session.getIdToken().jwtToken}`;
+      Axios.defaults.headers.common["Authorization"] = `Bearer ${
+        session.getIdToken().jwtToken
+      }`;
       setIsAuthenticating(false);
       setAuthenticated(true);
       dispatch({ type: "session_authenticated", user });

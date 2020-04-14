@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@aws-amplify/analytics@^2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/analytics/-/analytics-2.2.8.tgz#0dea772eb1eab6ca07f37bd4a92d203b8ac7e06c"
+  integrity sha512-c3AZsvf4RVvEh8UjVE0VgJIpkE3aJ1uv5fzwXYXDnnf7Gmz1GzHy01kUEmyedgYCwx8qI0GiZNI2N9X8BAc86g==
+  dependencies:
+    "@aws-amplify/cache" "^2.1.8"
+    "@aws-amplify/core" "^2.3.0"
+    uuid "^3.2.1"
+
 "@aws-amplify/analytics@^3.1.4":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@aws-amplify/analytics/-/analytics-3.1.4.tgz#f68db041214977fe91d5e8073fb17ea82c121a45"
@@ -35,6 +44,19 @@
   dependencies:
     "@aws-amplify/core" "^3.2.1"
     axios "^0.19.0"
+
+"@aws-amplify/api@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/api/-/api-2.2.1.tgz#a4dcd530d9a27a1e42d5fd5f5828d477c5afa9de"
+  integrity sha512-1c7Gb1TO9NYETQmpDZV6TP+fcsZMBu/dDpWRM26Hb2huWqoIPKjE/nBfQl1egymy5CfZFivWYlCI+Y92jpQ2oA==
+  dependencies:
+    "@aws-amplify/auth" "^2.1.8"
+    "@aws-amplify/cache" "^2.1.8"
+    "@aws-amplify/core" "^2.3.0"
+    axios "^0.19.0"
+    graphql "14.0.0"
+    uuid "^3.2.1"
+    zen-observable "^0.8.6"
 
 "@aws-amplify/api@^3.1.4":
   version "3.1.4"
@@ -140,7 +162,7 @@
     "@aws-sdk/util-utf8-node" "1.0.0-beta.2"
     uuid "^3.2.1"
 
-"@aws-amplify/pubsub@^2.1.1":
+"@aws-amplify/pubsub@^2.1.9":
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/@aws-amplify/pubsub/-/pubsub-2.1.9.tgz#3a50a2863117d48adc5e03f0477983622c8ba226"
   integrity sha512-zQ5d9arPhe2kqLTVJqGzjKJvWFQQtzMOOK/2qE3Z8sSU0+88KvtFQHodgxsROv6W8ZO7En+suHcR1S3nv4Qa3g==
@@ -166,6 +188,13 @@
     uuid "^3.2.1"
     zen-observable-ts "0.8.19"
 
+"@aws-amplify/storage@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/storage/-/storage-2.2.3.tgz#ebf4cf0a436d734d8cd2f96f0dfcf0c0b91e2272"
+  integrity sha512-ic3K1rRUMxxJJxmncxT2I8uRv6nM8isS5T8cBYZF5KEY2AxFvlOLkpURs0Pt3S8KrIMBRHwSMdPbM0CDedTtIA==
+  dependencies:
+    "@aws-amplify/core" "^2.3.0"
+
 "@aws-amplify/storage@^3.1.4":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@aws-amplify/storage/-/storage-3.1.4.tgz#f1d01a0fc98f17542ee95c1d321ab13a7d8c3d1b"
@@ -184,6 +213,13 @@
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@aws-amplify/ui/-/ui-2.0.2.tgz#56bfc3674454f2a12d1cec247f38a444aa13ea09"
   integrity sha512-OLdZmUCVK29+JV8PrkgVPjg+GIFtBnNjhC0JSRgrps+ynOFkibMQQPKeFXlTYtlukuCuepCelPSkjxvhcLq2ZA==
+
+"@aws-amplify/xr@^1.1.5":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/xr/-/xr-1.1.8.tgz#75de2948f2fe176ad70a725c8032ed3c53868313"
+  integrity sha512-QWsYHNiNOanSldwYYcCwD6D0e6G2cg3nVh4BSHxFXa5NAfgmU/s3p02aZxy4d46FzlkaAhJV6zUoGeWRFPbPFw==
+  dependencies:
+    "@aws-amplify/core" "^2.3.0"
 
 "@aws-amplify/xr@^2.1.4":
   version "2.1.4"
@@ -2867,6 +2903,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@react-native-community/netinfo@^5.7.0":
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.7.0.tgz#54be55f22c6a6358d5d61f2aa1bc1de20c7b53b6"
+  integrity sha512-ZhmkaqRpLFvOMu/Ln3YCitBJUgk7lbFsvcinbW/LIktXM6BwVwEZPTkYr+N74hEAhKz2CcDN8aMzzaokxwxRqg==
+
 "@sheerun/mutationobserver-shim@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.3.tgz#5405ee8e444ed212db44e79351f0c70a582aae25"
@@ -4534,6 +4575,11 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+chain-function@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.1.tgz#c63045e5b4b663fb86f1c6e186adaf1de402a1cc"
+  integrity sha512-SxltgMwL9uCko5/ZCLiyG2B7R9fY4pDZUw7hJ4MhirdjBLosoDqkWABi3XMucddHdLiFJMb7PD2MZifZriuMTg==
+
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.4.1, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -5584,6 +5630,13 @@ dom-converter@^0.2:
   integrity sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==
   dependencies:
     utila "~0.4"
+
+dom-helpers@^3.2.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
+  integrity sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
 
 dom-helpers@^5.0.1:
   version "5.1.4"
@@ -10706,7 +10759,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.6, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10878,6 +10931,13 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-addons-css-transition-group@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-css-transition-group/-/react-addons-css-transition-group-15.6.2.tgz#9e4376bcf40b5217d14ec68553081cee4b08a6d6"
+  integrity sha1-nkN2vPQLUhfRTsaFUwgc7ksIptY=
+  dependencies:
+    react-transition-group "^1.2.0"
+
 react-app-polyfill@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.6.tgz#890f8d7f2842ce6073f030b117de9130a5f385f0"
@@ -11045,6 +11105,17 @@ react-scripts@3.4.1:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-transition-group@^1.2.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.1.tgz#e11f72b257f921b213229a774df46612346c7ca6"
+  integrity sha512-CWaL3laCmgAFdxdKbhhps+c0HRGF4c+hdM4H23+FI1QBNUyx/AMeIJGWorehPNSaKnQNOAxL7PQmqMu78CDj3Q==
+  dependencies:
+    chain-function "^1.0.0"
+    dom-helpers "^3.2.0"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.6"
+    warning "^3.0.0"
 
 react-transition-group@^4.3.0:
   version "4.3.0"
@@ -12998,6 +13069,13 @@ walker@^1.0.7, walker@~1.0.5:
   integrity sha1-L3+bj9ENZ3JisYqITijRlhjgKPs=
   dependencies:
     makeerror "1.0.x"
+
+warning@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
+  dependencies:
+    loose-envify "^1.0.0"
 
 watchpack@^1.6.0:
   version "1.6.0"

@@ -4,9 +4,11 @@ import Layout from "../../hoc/Layout";
 
 const Home = () => {
   return (
-    <Layout>
-      <Planner />
-    </Layout>
+    <div className="page">
+      <Layout>
+        <Planner />
+      </Layout>
+    </div>
   );
 };
 

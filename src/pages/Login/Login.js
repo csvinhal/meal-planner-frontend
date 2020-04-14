@@ -1,53 +1,58 @@
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import Paper from "@material-ui/core/Paper";
+import {
+  Avatar,
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import PersonOutline from "@material-ui/icons/PersonOutline";
 import { Auth } from "aws-amplify";
+import clsx from "clsx";
 import { useFormik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { useStateValue } from "../../context/StateContext";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    marginRight: "auto",
-    marginLeft: "auto",
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
     marginTop: theme.spacing(2 * 8),
-    [theme.breakpoints.up("md")]: {
-      maxWidth: 560
-    }
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: 560,
+      marginRight: "auto",
+      marginLeft: "auto",
+    },
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     marginTop: theme.spacing(),
-    width: "100%"
+    width: "100%",
   },
   buttonContainer: {
     marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   buttonBack: {
-    marginLeft: theme.spacing(2)
-  }
+    marginLeft: theme.spacing(2),
+  },
 }));
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (!values.username) {
     errors.email = "O campo é obrigatório";
@@ -68,15 +73,15 @@ const Login = () => {
   const formik = useFormik({
     initialValues: {
       username: "",
-      password: ""
+      password: "",
     },
     validate,
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       const { username, password } = values;
       try {
         const user = await Auth.signIn({
           username,
-          password
+          password,
         });
         dispatch({ type: "signed_in", user });
         history.push("/");
@@ -85,7 +90,7 @@ const Login = () => {
         !error.message ? (err = { message: error }) : (err = error);
         alert.log(err.message);
       }
-    }
+    },
   });
 
   const handleToSignUp = () => {
@@ -93,7 +98,7 @@ const Login = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={clsx("page", classes.root)}>
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <PersonOutline />
@@ -117,7 +122,7 @@ const Login = () => {
                 <Input
                   id="ff-username"
                   name="username"
-                  autoComplete="nickname"
+                  autoComplete="username"
                   aria-describedby="ht-username"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
