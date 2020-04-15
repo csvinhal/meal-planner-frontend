@@ -11,12 +11,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { actions } from "../../../reducers/toast";
 import {
   createRecipe,
   getRecipe,
   updateRecipe,
 } from "../../../shared/recipesApi";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,7 +51,7 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = () => {
+const RecipesForm = ({ showMessage }) => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
@@ -69,20 +73,29 @@ const RecipesForm = () => {
     },
     validate,
     onSubmit: async (values) => {
+      let request;
+
       if (id) {
-        try {
-          const data = await updateRecipe(id, values);
-          goBack();
-        } catch (err) {
-          console.log(err);
-        }
+        request = updateRecipe(id, values);
       } else {
-        try {
-          const data = await createRecipe(values);
-          goBack();
-        } catch (err) {
-          console.log(err);
-        }
+        request = createRecipe(values);
+      }
+
+      try {
+        await request;
+        showMessage({
+          severity: "success",
+          message: "Receita salva com sucesso!",
+        });
+        goBack();
+      } catch (err) {
+        const message =
+          (err && err.errors && err.errors.body && err.errors.body.message) ||
+          "Erro ao salvar receita";
+        showMessage({
+          severity: "error",
+          message,
+        });
       }
     },
   });
@@ -144,4 +157,12 @@ const RecipesForm = () => {
   );
 };
 
-export default RecipesForm;
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(actions, dispatch),
+});
+
+RecipesForm.propTypes = {
+  showMessage: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(RecipesForm);

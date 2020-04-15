@@ -5,7 +5,7 @@ import PrivateRoute from "../../hoc/PrivateRoute";
 import RecipesForm from "./RecipesForm/RecipesForm";
 import RecipesList from "./RecipesList/RecipesList";
 
-const Recipes = ({ match, location, history }) => {
+const Recipes = () => {
   const { path } = useRouteMatch();
   return (
     <div className="page">

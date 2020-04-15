@@ -1,6 +1,6 @@
 import Axios from "./requestsConfig";
 
-export const fetchAllRecipes = (limit = 10, offset = 0) => {
+export const fetchAllRecipes = () => {
   return Axios.get(`recipe`);
 };
 
@@ -9,9 +9,9 @@ export const getRecipe = (id) => {
 };
 
 export const createRecipe = (recipe) => {
-  return Axios.post(`recipes`, recipe);
+  return Axios.post(`recipe`, recipe);
 };
 
 export const updateRecipe = (id, recipe) => {
-  return Axios.patch(`recipe/${id}`, recipe);
+  return Axios.put(`recipe/${id}`, recipe);
 };

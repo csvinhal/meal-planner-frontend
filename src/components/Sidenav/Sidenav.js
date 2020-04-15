@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import PropTypes from "prop-types";
 import React from "react";
 import ListItems from "./ListItems/ListItems";
 
@@ -62,6 +63,11 @@ const Sidenav = ({ open, handleDrawerClose }) => {
       <ListItems handleDrawerClose={handleDrawerClose}></ListItems>
     </Drawer>
   );
+};
+
+Sidenav.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleDrawerClose: PropTypes.func.isRequired,
 };
 
 export default Sidenav;

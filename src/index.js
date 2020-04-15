@@ -1,11 +1,16 @@
 import Amplify from "aws-amplify";
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
 import App from "./App";
-import "./index.scss";
-import * as serviceWorker from "./serviceWorker";
 import { StateProvider } from "./context/StateContext";
+import "./index.scss";
 import { initialState, reducer } from "./reducers/stateContext";
+import toastReducer from "./reducers/toast";
+import * as serviceWorker from "./serviceWorker";
 
 Amplify.configure({
   Auth: {
@@ -18,17 +23,29 @@ Amplify.configure({
       scope: process.env.REACT_APP_COGNITO_SCOPE,
       redirectSignIn: process.env.REACT_APP_COGNITO_REDIRECT_SIGN_IN,
       redirectSignOut: process.env.REACT_APP_COGNITO_REDIRECT_SIGN_OUT,
-      responseType: process.env.REACT_APP_COGNITO_RESPONSE_TYPE
-
-    }
-  }
+      responseType: process.env.REACT_APP_COGNITO_RESPONSE_TYPE,
+    },
+  },
 });
+
+const rootReducer = combineReducers({
+  toast: toastReducer,
+});
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
 ReactDOM.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
-      <App />
-    </StateProvider>
+    <Provider store={store}>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <App />
+      </StateProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

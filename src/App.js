@@ -1,18 +1,37 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
+import PropTypes from "prop-types";
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { bindActionCreators } from "redux";
 import "./App.scss";
+import Toast from "./components/Toast/Toast";
 import PrivateRoute from "./hoc/PrivateRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Recipes from "./pages/Recipes/Recipes";
 import Register from "./pages/Register/Register";
+import { actions } from "./reducers/toast";
 
-function App() {
+function App({ open, severity, message, closeMessage }) {
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    closeMessage();
+  };
+
   return (
     <Fragment>
       <CssBaseline />
+      <Toast
+        open={open}
+        severity={severity}
+        message={message}
+        handleClose={handleToastClose}
+      />
       <div className="App">
         <Router>
           <Route
@@ -39,4 +58,21 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  open: state.toast.open,
+  severity: state.toast.severity,
+  message: state.toast.message,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(actions, dispatch),
+});
+
+App.propTypes = {
+  open: PropTypes.bool,
+  severity: PropTypes.string,
+  message: PropTypes.string,
+  closeMessage: PropTypes.func,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

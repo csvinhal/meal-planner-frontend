@@ -1,24 +1,34 @@
-import React, { useState } from "react";
-import { Snackbar } from "@material-ui/core/Snackbar";
-import { Alert } from "@material-ui/core/Alert";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import PropTypes from "prop-types";
+import React from "react";
 
-const Toast = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
+const Toast = ({ open, message, severity, handleClose }) => {
   return (
-    <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success">
-        This is a success message!
+    <Snackbar
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      open={open}
+      autoHideDuration={5000}
+      onClose={handleClose}
+    >
+      <Alert
+        elevation={6}
+        variant="filled"
+        onClose={handleClose}
+        severity={severity}
+      >
+        {message}
       </Alert>
     </Snackbar>
   );
+};
+
+Toast.propTypes = {
+  open: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  severity: PropTypes.oneOf(["error", "warning", "info", "success"])
+    .isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default Toast;
