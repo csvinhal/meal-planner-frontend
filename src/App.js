@@ -6,15 +6,16 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { bindActionCreators } from "redux";
 import "./App.scss";
+import Loading from "./components/Loading/Loading";
 import Toast from "./components/Toast/Toast";
 import PrivateRoute from "./hoc/PrivateRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Recipes from "./pages/Recipes/Recipes";
 import Register from "./pages/Register/Register";
-import { actions } from "./reducers/toast";
+import { actions as toastActions } from "./reducers/toast";
 
-function App({ open, severity, message, closeMessage }) {
+function App({ openToast, severity, message, openLoading, closeMessage }) {
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -26,8 +27,9 @@ function App({ open, severity, message, closeMessage }) {
   return (
     <Fragment>
       <CssBaseline />
+      <Loading open={openLoading} />
       <Toast
-        open={open}
+        open={openToast}
         severity={severity}
         message={message}
         handleClose={handleToastClose}
@@ -59,20 +61,23 @@ function App({ open, severity, message, closeMessage }) {
 }
 
 const mapStateToProps = (state) => ({
-  open: state.toast.open,
+  openToast: state.toast.open,
+  openLoading: state.loader.open,
   severity: state.toast.severity,
   message: state.toast.message,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(actions, dispatch),
+  ...bindActionCreators(toastActions, dispatch),
 });
 
 App.propTypes = {
-  open: PropTypes.bool,
+  openToast: PropTypes.bool,
   severity: PropTypes.string,
   message: PropTypes.string,
+  openLoading: PropTypes.bool,
   closeMessage: PropTypes.func,
+  closeLoader: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

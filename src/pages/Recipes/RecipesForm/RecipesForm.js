@@ -10,17 +10,18 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
+import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { actions } from "../../../reducers/toast";
+import { actions as loadingActions } from "../../../reducers/loading";
+import { actions as toastActions } from "../../../reducers/toast";
 import {
   createRecipe,
   getRecipe,
   updateRecipe,
 } from "../../../shared/recipesApi";
-import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,25 +52,16 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = ({ showMessage }) => {
+const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
-
-  useEffect(() => {
-    if (id) {
-      getRecipe(id).then((response) => formik.setValues(response.data));
-    }
-  }, []);
-
-  const goBack = () => {
-    history.push("/recipes");
-  };
 
   const formik = useFormik({
     initialValues: {
       id: "",
       recipeName: "",
+      description: "",
     },
     validate,
     onSubmit: async (values) => {
@@ -82,6 +74,7 @@ const RecipesForm = ({ showMessage }) => {
       }
 
       try {
+        showLoader();
         await request;
         showMessage({
           severity: "success",
@@ -96,9 +89,31 @@ const RecipesForm = ({ showMessage }) => {
           severity: "error",
           message,
         });
+      } finally {
+        closeLoader();
       }
     },
   });
+
+  useEffect(() => {
+    if (id) {
+      showLoader();
+      getRecipe(id)
+        .then((response) => formik.setValues(response.data.result))
+        .catch(() =>
+          showMessage({
+            severity: "error",
+            message:
+              "Ocorreu um erro ao retornar os dados da receita no nosso servidor!",
+          })
+        )
+        .finally(() => closeLoader());
+    }
+  }, [id]);
+
+  const goBack = () => {
+    history.push("/recipes");
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -117,7 +132,7 @@ const RecipesForm = ({ showMessage }) => {
               fullWidth
               error={formik.touched.recipeName && !!formik.errors.recipeName}
             >
-              <InputLabel htmlFor="ff-name">Nome da receita</InputLabel>
+              <InputLabel htmlFor="ff-name">Nome</InputLabel>
               <Input
                 id="ff-name"
                 name="recipeName"
@@ -131,6 +146,21 @@ const RecipesForm = ({ showMessage }) => {
                   {formik.errors.recipeName}
                 </FormHelperText>
               ) : null}
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl
+              fullWidth
+              error={formik.touched.description && !!formik.errors.description}
+            >
+              <InputLabel htmlFor="ff-description">Descrição</InputLabel>
+              <Input
+                id="ff-description"
+                name="description"
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                value={formik.values.description}
+              />
             </FormControl>
           </Grid>
         </Grid>
@@ -158,11 +188,14 @@ const RecipesForm = ({ showMessage }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(actions, dispatch),
+  ...bindActionCreators(toastActions, dispatch),
+  ...bindActionCreators(loadingActions, dispatch),
 });
 
 RecipesForm.propTypes = {
   showMessage: PropTypes.func.isRequired,
+  showLoader: PropTypes.func.isRequired,
+  closeLoader: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(RecipesForm);

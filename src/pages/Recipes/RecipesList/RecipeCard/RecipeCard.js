@@ -51,8 +51,7 @@ const RecipeCard = ({ recipe }) => {
             {recipe.recipeName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {recipe.description}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -73,6 +72,7 @@ RecipeCard.propTypes = {
     id: PropTypes.string,
     recipeName: PropTypes.string,
     image: PropTypes.string,
+    description: PropTypes.string,
   }),
 };
 

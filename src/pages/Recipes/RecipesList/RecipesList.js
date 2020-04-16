@@ -1,11 +1,14 @@
 import { Button, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { fetchAllRecipes } from "../../../shared/recipesApi";
-import RecipeCard from "./RecipeCard/RecipeCard";
-import EmptyState from "../../../components/EmptyState/EmptyState";
+import { bindActionCreators } from "redux";
 import recipeNotFound from "../../../assets/images/receipt-not-found.svg";
+import EmptyState from "../../../components/EmptyState/EmptyState";
+import { actions as recipeActions } from "../../../reducers/recipe";
+import RecipeCard from "./RecipeCard/RecipeCard";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -16,20 +19,22 @@ const useStyles = makeStyles((theme) => ({
   },
   emptyState: {
     margin: "auto",
-  }
+  },
 }));
-const RecipesList = () => {
+const RecipesList = ({ items, fetchAllRecipesStart }) => {
   const [recipes, setRecipes] = useState([]);
-  const [offset, setOffset] = useState(0);
   const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
-    fetchAllRecipes(10, offset).then((response) => {
-      const { data } = response;
-      setRecipes((p) => [...p, ...data.results]);
-    });
-  }, [offset]);
+    fetchAllRecipesStart();
+  }, [fetchAllRecipesStart]);
+
+  useEffect(() => {
+    if (items) {
+      setRecipes(items);
+    }
+  }, [items]);
 
   const handlerAdd = () => {
     history.push("/recipes/add");
@@ -46,7 +51,7 @@ const RecipesList = () => {
               Adicionar
             </Button>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             {recipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
@@ -70,4 +75,16 @@ const RecipesList = () => {
   return content;
 };
 
-export default RecipesList;
+const mapStateToProps = (state) => ({
+  items: state.recipe.items,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(recipeActions, dispatch),
+});
+
+RecipesList.propTypes = {
+  fetchAllRecipesStart: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipesList);
