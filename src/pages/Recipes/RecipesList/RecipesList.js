@@ -21,14 +21,14 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
 }));
-const RecipesList = ({ items, fetchAllRecipesStart }) => {
+const RecipesList = ({ items, fetchAllRecipes }) => {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
-    fetchAllRecipesStart();
-  }, [fetchAllRecipesStart]);
+    fetchAllRecipes();
+  }, [fetchAllRecipes]);
 
   useEffect(() => {
     if (items) {
@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 RecipesList.propTypes = {
-  fetchAllRecipesStart: PropTypes.func.isRequired,
+  fetchAllRecipes: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesList);

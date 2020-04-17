@@ -16,12 +16,9 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { actions as loadingActions } from "../../../reducers/loading";
+import { actions as recipeActions } from "../../../reducers/recipe";
 import { actions as toastActions } from "../../../reducers/toast";
-import {
-  createRecipe,
-  getRecipe,
-  updateRecipe,
-} from "../../../shared/recipesApi";
+import { createRecipe, updateRecipe } from "../../../shared/recipesApi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,10 +49,22 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
+const RecipesForm = ({
+  showMessage,
+  showLoader,
+  closeLoader,
+  item,
+  getRecipe,
+}) => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      getRecipe(id);
+    }
+  }, [id, getRecipe]);
 
   const formik = useFormik({
     initialValues: {
@@ -95,21 +104,19 @@ const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
     },
   });
 
+  const { setFormikState } = formik;
+
   useEffect(() => {
-    if (id) {
-      showLoader();
-      getRecipe(id)
-        .then((response) => formik.setValues(response.data.result))
-        .catch(() =>
-          showMessage({
-            severity: "error",
-            message:
-              "Ocorreu um erro ao retornar os dados da receita no nosso servidor!",
-          })
-        )
-        .finally(() => closeLoader());
+    if (item) {
+      setFormikState((prevState) => ({
+        ...prevState,
+        values: {
+          ...prevState.values,
+          ...item,
+        },
+      }));
     }
-  }, [id]);
+  }, [item, setFormikState]);
 
   const goBack = () => {
     history.push("/recipes");
@@ -137,9 +144,7 @@ const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
                 id="ff-name"
                 name="recipeName"
                 aria-describedby="ht-name"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.recipeName}
+                {...formik.getFieldProps("recipeName")}
               />
               {formik.touched.recipeName && formik.errors.recipeName ? (
                 <FormHelperText id="ht-name" error>
@@ -157,9 +162,7 @@ const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
               <Input
                 id="ff-description"
                 name="description"
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                value={formik.values.description}
+                {...formik.getFieldProps("description")}
               />
             </FormControl>
           </Grid>
@@ -187,15 +190,22 @@ const RecipesForm = ({ showMessage, showLoader, closeLoader }) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  item: state.recipe.item,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(toastActions, dispatch),
   ...bindActionCreators(loadingActions, dispatch),
+  ...bindActionCreators(recipeActions, dispatch),
 });
 
 RecipesForm.propTypes = {
+  item: PropTypes.object,
   showMessage: PropTypes.func.isRequired,
   showLoader: PropTypes.func.isRequired,
   closeLoader: PropTypes.func.isRequired,
+  getRecipe: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(RecipesForm);
+export default connect(mapStateToProps, mapDispatchToProps)(RecipesForm);

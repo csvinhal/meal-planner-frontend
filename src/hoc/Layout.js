@@ -2,6 +2,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import AppToolbar from "../components/AppToolbar/AppToolbar";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,12 +30,17 @@ const Layout = ({ children }) => {
         <AppToolbar />
       </header>
       <main className={classes.content}>
-        <Container className={classes.container}>
-          {children}
-        </Container>
+        <Container className={classes.container}>{children}</Container>
       </main>
     </div>
   );
+};
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default Layout;

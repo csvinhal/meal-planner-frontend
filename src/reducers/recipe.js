@@ -1,45 +1,53 @@
 export const types = {
-  FETCH_ALL_RECIPES_REQUEST: "[Recipe] Fetch all resumes requested",
-  FETCH_ALL_RECIPES_SUCCEEDED: "[Recipe] Fetch all resumes succeeded",
-  FETCH_ALL_RECIPES_FAILED: "[Recipe] Fetch all resumes failed",
+  FETCH_ALL_RECIPES_REQUEST: "[Recipe] Fetch all recipes requested",
+  FETCH_ALL_RECIPES_SUCCEEDED: "[Recipe] Fetch all recipes succeeded",
+  FETCH_ALL_RECIPES_FAILED: "[Recipe] Fetch all recipes failed",
+  GET_RECIPE_REQUEST: "[Recipe] Get a recipe requested",
+  GET_RECIPE_SUCCEEDED: "[Recipe] Get a recipe succeeded",
+  GET_RECIPE_FAILED: "[Recipe] Fetch a recipe failed",
 };
 
-const initialState = {
-  items: [],
-  removeId: null,
-};
-
-const fetchAllRecipesRequest = (state) => ({
+const fetchAllRecipesSucceeded = (state, action) => ({
   ...state,
+  items: [...action.recipes],
 });
 
-const fetchAllRecipesSuccess = (state, action) => ({
+const getRecipeSucceeded = (state, action) => ({
   ...state,
-  items: [...action.resumes],
+  item: action.recipe,
 });
 
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
-    case types.FETCH_ALL_RECIPES_REQUEST:
-      return fetchAllRecipesRequest(state);
     case types.FETCH_ALL_RECIPES_SUCCEEDED:
-      return fetchAllRecipesSuccess(state, action);
-    case types.FETCH_ALL_RECIPES_FAILED:
+      return fetchAllRecipesSucceeded(state, action);
+    case types.GET_RECIPE_SUCCEEDED:
+      return getRecipeSucceeded(state, action);
     default:
       return state;
   }
 };
 
 export const actions = {
-  fetchAllRecipesStart: () => ({
+  fetchAllRecipes: () => ({
     type: types.FETCH_ALL_RECIPES_REQUEST,
   }),
-  fetchAllRecipesSucceeded: (resumes) => ({
+  fetchAllRecipesSucceeded: (recipes) => ({
     type: types.FETCH_ALL_RECIPES_SUCCEEDED,
-    resumes,
+    recipes,
   }),
-  fetchAllRecipesFailed: (error) => ({
+  fetchAllRecipesFailed: () => ({
     type: types.FETCH_ALL_RECIPES_FAILED,
-    error,
+  }),
+  getRecipe: (id) => ({
+    type: types.GET_RECIPE_REQUEST,
+    id,
+  }),
+  getRecipeSucceeded: (recipe) => ({
+    type: types.GET_RECIPE_SUCCEEDED,
+    recipe,
+  }),
+  getRecipeFailed: () => ({
+    type: types.GET_RECIPE_FAILED,
   }),
 };
