@@ -1,21 +1,21 @@
+import { fromJS } from "immutable";
+
 export const types = {
   SHOW_LOADER: "[Loading] show loader",
   CLOSE_LOADER: "[Loading] close loader",
 };
 
-const initialState = {
+const initialState = fromJS({
   open: false,
+});
+
+const showLoader = (state) => {
+  return state.set("open", true);
 };
 
-const showLoader = (state) => ({
-  ...state,
-  open: true,
-});
-
-const closeLoader = (state) => ({
-  ...state,
-  open: false,
-});
+const closeLoader = (state) => {
+  return state.set("open", false);
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {

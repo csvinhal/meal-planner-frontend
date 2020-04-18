@@ -61,10 +61,10 @@ function App({ openToast, severity, message, openLoading, closeMessage }) {
 }
 
 const mapStateToProps = (state) => ({
-  openToast: state.toast.open,
-  openLoading: state.loader.open,
-  severity: state.toast.severity,
-  message: state.toast.message,
+  openToast: state.toast.get("open"),
+  openLoading: state.loader.get("open"),
+  severity: state.toast.get("severity"),
+  message: state.toast.get("message"),
 });
 
 const mapDispatchToProps = (dispatch) => ({

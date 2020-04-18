@@ -191,7 +191,7 @@ const RecipesForm = ({
 };
 
 const mapStateToProps = (state) => ({
-  item: state.recipe.item,
+  item: state.recipe.get("item").toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

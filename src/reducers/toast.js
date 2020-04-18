@@ -1,27 +1,26 @@
+import { fromJS } from "immutable";
+
 export const types = {
   SHOW_MESSAGE: "[Toast] show message",
   CLOSE_MESSAGE: "[Toast] close message",
 };
 
-const initialState = {
+const initialState = fromJS({
   message: "",
   severity: "success",
   open: false,
+});
+
+const showMessage = (state, action) => {
+  return state
+    .set("open", true)
+    .set("severity", action.severity)
+    .set("message", action.message);
 };
 
-const showMessage = (state, action) => ({
-  ...state,
-  open: true,
-  severity: action.severity,
-  message: action.message,
-});
-
-const closeMessage = (state) => ({
-  ...state,
-  open: false,
-  severity: "success",
-  message: "",
-});
+const closeMessage = (state) => {
+  return state.set("open", false).set("severity", "").set("message", "");
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {

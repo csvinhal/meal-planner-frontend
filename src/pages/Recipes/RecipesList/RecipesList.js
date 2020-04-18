@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
 }));
-const RecipesList = ({ items, fetchAllRecipes }) => {
+const RecipesList = ({ items, isLoading, fetchAllRecipes }) => {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
   const classes = useStyles();
@@ -41,8 +41,10 @@ const RecipesList = ({ items, fetchAllRecipes }) => {
   };
 
   let content;
-
-  if (recipes && recipes.length) {
+  
+  if (isLoading) {
+    content = <></>;
+  } else if (recipes && recipes.length) {
     content = (
       <Paper elevation={2} className={classes.paper}>
         <Grid container spacing={2}>
@@ -51,11 +53,11 @@ const RecipesList = ({ items, fetchAllRecipes }) => {
               Adicionar
             </Button>
           </Grid>
-          <Grid item xs={12} md={4}>
-            {recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
-          </Grid>
+          {recipes.map((recipe) => (
+            <Grid key={recipe.id} item xs={12} md={4}>
+              <RecipeCard recipe={recipe} />
+            </Grid>
+          ))}
         </Grid>
       </Paper>
     );
@@ -76,7 +78,8 @@ const RecipesList = ({ items, fetchAllRecipes }) => {
 };
 
 const mapStateToProps = (state) => ({
-  items: state.recipe.items,
+  items: state.recipe.get("items").toJS(),
+  isLoading: state.loader.get("open"),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -84,6 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 RecipesList.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
   fetchAllRecipes: PropTypes.func.isRequired,
 };
 
