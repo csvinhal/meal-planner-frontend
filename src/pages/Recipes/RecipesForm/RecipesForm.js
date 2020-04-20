@@ -15,10 +15,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { actions as loadingActions } from "../../../reducers/loading";
 import { actions as recipeActions } from "../../../reducers/recipe";
-import { actions as toastActions } from "../../../reducers/toast";
-import { createRecipe, updateRecipe } from "../../../shared/recipesApi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,13 +46,7 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = ({
-  showMessage,
-  showLoader,
-  closeLoader,
-  item,
-  getRecipe,
-}) => {
+const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
@@ -73,33 +64,11 @@ const RecipesForm = ({
       description: "",
     },
     validate,
-    onSubmit: async (values) => {
-      let request;
-
+    onSubmit: (values) => {
       if (id) {
-        request = updateRecipe(id, values);
+        updateRecipe({ id, item: values, history });
       } else {
-        request = createRecipe(values);
-      }
-
-      try {
-        showLoader();
-        await request;
-        showMessage({
-          severity: "success",
-          message: "Receita salva com sucesso!",
-        });
-        goBack();
-      } catch (err) {
-        const message =
-          (err && err.errors && err.errors.body && err.errors.body.message) ||
-          "Erro ao salvar receita";
-        showMessage({
-          severity: "error",
-          message,
-        });
-      } finally {
-        closeLoader();
+        createRecipe({ item: values, history });
       }
     },
   });
@@ -195,17 +164,14 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(toastActions, dispatch),
-  ...bindActionCreators(loadingActions, dispatch),
   ...bindActionCreators(recipeActions, dispatch),
 });
 
 RecipesForm.propTypes = {
   item: PropTypes.object,
-  showMessage: PropTypes.func.isRequired,
-  showLoader: PropTypes.func.isRequired,
-  closeLoader: PropTypes.func.isRequired,
   getRecipe: PropTypes.func.isRequired,
+  createRecipe: PropTypes.func.isRequired,
+  updateRecipe: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesForm);

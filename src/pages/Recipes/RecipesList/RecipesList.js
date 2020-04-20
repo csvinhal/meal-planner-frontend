@@ -21,10 +21,14 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
 }));
-const RecipesList = ({ items, isLoading, fetchAllRecipes }) => {
+const RecipesList = ({ items, isLoading, pageLoaded, fetchAllRecipes }) => {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
   const classes = useStyles();
+
+  useEffect(() => {
+    pageLoaded();
+  }, [pageLoaded]);
 
   useEffect(() => {
     fetchAllRecipes();
@@ -41,7 +45,7 @@ const RecipesList = ({ items, isLoading, fetchAllRecipes }) => {
   };
 
   let content;
-  
+
   if (isLoading) {
     content = <></>;
   } else if (recipes && recipes.length) {
@@ -54,7 +58,7 @@ const RecipesList = ({ items, isLoading, fetchAllRecipes }) => {
             </Button>
           </Grid>
           {recipes.map((recipe) => (
-            <Grid key={recipe.id} item xs={12} md={4}>
+            <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
               <RecipeCard recipe={recipe} />
             </Grid>
           ))}
@@ -88,6 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 RecipesList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
+  pageLoaded: PropTypes.func.isRequired,
   fetchAllRecipes: PropTypes.func.isRequired,
 };
 

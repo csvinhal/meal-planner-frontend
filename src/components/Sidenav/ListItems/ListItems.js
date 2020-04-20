@@ -5,6 +5,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import ReceiptIcon from "@material-ui/icons/ReceiptOutlined";
+import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -55,6 +56,10 @@ const ListItems = ({ handleDrawerClose }) => {
       </List>
     </div>
   );
+};
+
+ListItems.propTypes = {
+  handleDrawerClose: PropTypes.func.isRequired,
 };
 
 export default ListItems;

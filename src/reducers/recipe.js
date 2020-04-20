@@ -1,6 +1,7 @@
 import { fromJS } from "immutable";
 
 export const types = {
+  RECIPE_PAGE_LOADED: "[Recipe] page loaded",
   FETCH_ALL_RECIPES_REQUEST: "[Recipe] Fetch all recipes requested",
   FETCH_ALL_RECIPES_SUCCEEDED: "[Recipe] Fetch all recipes succeeded",
   FETCH_ALL_RECIPES_FAILED: "[Recipe] Fetch all recipes failed",
@@ -18,26 +19,32 @@ export const types = {
 const initialState = fromJS({
   items: [],
   item: {},
+  history: null,
 });
 
+// eslint-disable-next-line no-unused-vars
+const pageLoaded = (state) => (state = initialState);
+
 const fetchAllRecipesSucceeded = (state, action) => {
-  return state.set("items", fromJS(action.recipes));
+  return state.set("items", fromJS(action.payload));
 };
 
 const getRecipeSucceeded = (state, action) => {
-  return state.set("item", fromJS(action.recipe));
+  return state.set("item", fromJS(action.payload));
 };
 
 const createRecipeSucceeded = (state, action) => {
-  return state.set("item", fromJS(action.recipe));
+  return state.set("item", fromJS(action.payload));
 };
 
 const updateRecipeSucceeded = (state, action) => {
-  return state.set("item", fromJS(action.recipe));
+  return state.set("item", fromJS(action.payload));
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.RECIPE_PAGE_LOADED:
+      return pageLoaded(state);
     case types.FETCH_ALL_RECIPES_SUCCEEDED:
       return fetchAllRecipesSucceeded(state, action);
     case types.GET_RECIPE_SUCCEEDED:
@@ -52,45 +59,48 @@ export default (state = initialState, action) => {
 };
 
 export const actions = {
+  pageLoaded: () => ({
+    type: types.RECIPE_PAGE_LOADED,
+  }),
   fetchAllRecipes: () => ({
     type: types.FETCH_ALL_RECIPES_REQUEST,
   }),
-  fetchAllRecipesSucceeded: (recipes) => ({
+  fetchAllRecipesSucceeded: (payload) => ({
     type: types.FETCH_ALL_RECIPES_SUCCEEDED,
-    recipes,
+    payload,
   }),
   fetchAllRecipesFailed: () => ({
     type: types.FETCH_ALL_RECIPES_FAILED,
   }),
-  getRecipe: (id) => ({
+  getRecipe: (payload) => ({
     type: types.GET_RECIPE_REQUEST,
-    id,
+    payload,
   }),
-  getRecipeSucceeded: (recipe) => ({
+  getRecipeSucceeded: (payload) => ({
     type: types.GET_RECIPE_SUCCEEDED,
-    recipe,
+    payload,
   }),
   getRecipeFailed: () => ({
     type: types.GET_RECIPE_FAILED,
   }),
-  createRecipe: (recipe) => ({
+  createRecipe: (payload) => ({
     type: types.CREATE_RECIPE_REQUEST,
-    recipe,
+    payload,
   }),
-  createRecipeSucceeded: (recipe) => ({
+  createRecipeSucceeded: (payload) => ({
     type: types.CREATE_RECIPE_SUCCEEDED,
-    recipe,
+    payload,
   }),
   createRecipeFailed: () => ({
     type: types.CREATE_RECIPE_FAILED,
   }),
-  updateRecipe: (recipe) => ({
+  updateRecipe: (payload) => ({
     type: types.UPDATE_RECIPE_REQUEST,
-    recipe,
+    payload,
   }),
-  updateRecipeSucceeded: (recipe) => ({
+  updateRecipeSucceeded: (payload) => ({
     type: types.UPDATE_RECIPE_SUCCEEDED,
-    recipe,
+    payload,
   }),
   updateRecipeFailed: () => ({
     type: types.UPDATE_RECIPE_FAILED,

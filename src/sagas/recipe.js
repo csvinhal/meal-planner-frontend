@@ -30,7 +30,7 @@ export function* fetchAllRecipesStart() {
 export function* getRecipeStart(action) {
   try {
     yield put(loadingActions.showLoader());
-    const response = yield call(getRecipe, action.id);
+    const response = yield call(getRecipe, action.payload);
     yield put(actions.getRecipeSucceeded(response.data.result));
   } catch (err) {
     yield put(actions.getRecipeFailed(err.response.data));
@@ -48,7 +48,8 @@ export function* getRecipeStart(action) {
 export function* createRecipeStart(action) {
   try {
     yield put(loadingActions.showLoader());
-    const response = yield call(createRecipe, action.item);
+    const response = yield call(createRecipe, action.payload.item);
+    yield call(action.payload.history.push, "/recipes");
     yield put(actions.createRecipeSucceeded(response.data.result));
     yield put(
       toastActions.showMessage({
@@ -72,7 +73,12 @@ export function* createRecipeStart(action) {
 export function* updateRecipeStart(action) {
   try {
     yield put(loadingActions.showLoader());
-    const response = yield call(updateRecipe, action.item.id, action.item);
+    const response = yield call(
+      updateRecipe,
+      action.payload.item.id,
+      action.payload.item
+    );
+    yield call(action.payload.history.push, "/recipes");
     yield put(actions.updateRecipeSucceeded(response.data.result));
     yield put(
       toastActions.showMessage({
