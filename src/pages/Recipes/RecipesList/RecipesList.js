@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import recipeNotFound from "../../../assets/images/receipt-not-found.svg";
+import recipeNotFound from "../../../assets/images/recipe-not-found.svg";
 import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { actions as recipeActions } from "../../../reducers/recipe";

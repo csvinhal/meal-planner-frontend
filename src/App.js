@@ -14,6 +14,19 @@ import Login from "./pages/Login/Login";
 import Recipes from "./pages/Recipes/Recipes";
 import Register from "./pages/Register/Register";
 import { actions as toastActions } from "./reducers/toast";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      light: "#ffb74d",
+      main: "#ff9800",
+      dark: "#f57c00"
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+  },
+});
 
 function App({ openToast, severity, message, openLoading, closeMessage }) {
   const handleToastClose = (event, reason) => {
@@ -26,36 +39,38 @@ function App({ openToast, severity, message, openLoading, closeMessage }) {
 
   return (
     <Fragment>
-      <CssBaseline />
-      <Loading open={openLoading} />
-      <Toast
-        open={openToast}
-        severity={severity}
-        message={message}
-        handleClose={handleToastClose}
-      />
-      <div className="App">
-        <Router>
-          <Route
-            render={({ location }) => (
-              <TransitionGroup>
-                <CSSTransition
-                  key={location.key}
-                  classNames="fade"
-                  timeout={300}
-                >
-                  <Switch location={location}>
-                    <Route exact path="/register" component={Register} />
-                    <Route exact path="/login" component={Login} />
-                    <PrivateRoute path="/recipes" component={Recipes} />
-                    <PrivateRoute path="/" component={Home} exact />
-                  </Switch>
-                </CSSTransition>
-              </TransitionGroup>
-            )}
-          />
-        </Router>
-      </div>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Loading open={openLoading} />
+        <Toast
+          open={openToast}
+          severity={severity}
+          message={message}
+          handleClose={handleToastClose}
+        />
+        <div className="App">
+          <Router>
+            <Route
+              render={({ location }) => (
+                <TransitionGroup>
+                  <CSSTransition
+                    key={location.key}
+                    classNames="fade"
+                    timeout={300}
+                  >
+                    <Switch location={location}>
+                      <Route exact path="/register" component={Register} />
+                      <Route exact path="/login" component={Login} />
+                      <PrivateRoute path="/recipes" component={Recipes} />
+                      <PrivateRoute path="/" component={Home} exact />
+                    </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+              )}
+            />
+          </Router>
+        </div>
+      </ThemeProvider>
     </Fragment>
   );
 }
