@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from "@material-ui/core";
+import { Button, Grid, Paper, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import recipeNotFound from "../../../assets/images/receipt-not-found.svg";
 import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { actions as recipeActions } from "../../../reducers/recipe";
+import AddIcon from "@material-ui/icons/Add";
 import RecipeCard from "./RecipeCard/RecipeCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +21,20 @@ const useStyles = makeStyles((theme) => ({
   },
   emptyState: {
     margin: "auto",
+  },
+  button: {
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+  },
+  fabButton: {
+    position: "fixed",
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
   },
 }));
 const RecipesList = ({
@@ -78,7 +93,12 @@ const RecipesList = ({
       <Paper elevation={2} className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" onClick={handlerAdd}>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={handlerAdd}
+            >
               Adicionar
             </Button>
           </Grid>
@@ -87,6 +107,14 @@ const RecipesList = ({
               <RecipeCard recipe={recipe} handleRemove={handleRemove} />
             </Grid>
           ))}
+          <Fab
+            className={classes.fabButton}
+            color="primary"
+            aria-label="add"
+            onClick={handlerAdd}
+          >
+            <AddIcon />
+          </Fab>
         </Grid>
       </Paper>
     );

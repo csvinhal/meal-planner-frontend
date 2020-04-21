@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
   fabButton: {
-    position: "absolute",
+    position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     [theme.breakpoints.up("sm")]: {
