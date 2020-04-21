@@ -1,4 +1,3 @@
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -8,18 +7,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import PersonOutline from "@material-ui/icons/PersonOutline";
 import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import signIn from "../../assets/images/sign-in.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(2 * 8),
+    marginTop: theme.spacing(4),
     [theme.breakpoints.up("sm")]: {
       maxWidth: 560,
       marginRight: "auto",
@@ -32,9 +31,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
+  banner: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    height: "88px",
+    width: "auto",
   },
   form: {
     marginTop: theme.spacing(),
@@ -119,9 +119,11 @@ const Register = () => {
   return (
     <div className={clsx("page", classes.root)}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PersonOutline />
-        </Avatar>
+        <img
+          className={classes.banner}
+          src={signIn}
+          alt="Banner da tela de registrar"
+        />
         <Typography variant="h5" component="h1">
           Cadastrar
         </Typography>

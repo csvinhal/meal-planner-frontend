@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   FormControl,
   FormHelperText,
@@ -10,19 +9,19 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PersonOutline from "@material-ui/icons/PersonOutline";
 import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import authentication from "../../assets/images/authentication.svg";
 import { useStateValue } from "../../context/StateContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(2 * 8),
+    marginTop: theme.spacing(4),
     [theme.breakpoints.up("sm")]: {
       maxWidth: 560,
       marginRight: "auto",
@@ -35,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
+  banner: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    height: "88px",
+    width: "auto",
   },
   form: {
     marginTop: theme.spacing(),
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 const validate = (values) => {
   const errors = {};
   if (!values.username) {
-    errors.email = "O campo é obrigatório";
+    errors.username = "O campo é obrigatório";
   }
 
   if (!values.password) {
@@ -100,9 +100,11 @@ const Login = () => {
   return (
     <div className={clsx("page", classes.root)}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PersonOutline />
-        </Avatar>
+        <img
+          className={classes.banner}
+          src={authentication}
+          alt="Banner da página de login"
+        />
         <Typography variant="h5" component="h1">
           Login
         </Typography>
