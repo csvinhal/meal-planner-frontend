@@ -1,6 +1,6 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import { actions as loadingActions } from "../reducers/loading";
-import { actions } from "../reducers/recipe";
+import { actions, types } from "../reducers/recipe";
 import { actions as toastActions } from "../reducers/toast";
 import {
   createRecipe,
@@ -138,3 +138,14 @@ export function* onDeleteRecipeSucceeded() {
     yield put(loadingActions.closeLoader());
   }
 }
+
+function* registerRecipe() {
+  yield takeEvery(types.FETCH_ALL_RECIPES_REQUEST, onFetchAllRecipes);
+  yield takeEvery(types.GET_RECIPE_REQUEST, onGetRecipe);
+  yield takeEvery(types.CREATE_RECIPE_REQUEST, onCreateRecipe);
+  yield takeEvery(types.UPDATE_RECIPE_REQUEST, onUpdateRecipe);
+  yield takeEvery(types.DELETE_RECIPE_REQUEST, onDeleteRecipe);
+  yield takeEvery(types.DELETE_RECIPE_SUCCEEDED, onDeleteRecipeSucceeded);
+}
+
+export default registerRecipe;
