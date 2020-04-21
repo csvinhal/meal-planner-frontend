@@ -15,3 +15,7 @@ export const createRecipe = (recipe) => {
 export const updateRecipe = (id, recipe) => {
   return Axios.put(`recipe/${id}`, recipe);
 };
+
+export const deleteRecipe = (id) => {
+  return Axios.delete(`recipe/${id}`);
+};

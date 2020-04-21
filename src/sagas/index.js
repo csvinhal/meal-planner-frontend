@@ -5,6 +5,7 @@ import {
   fetchAllRecipesStart,
   getRecipeStart,
   updateRecipeStart,
+  deleteRecipeStart,
 } from "./recipe";
 
 export default function* watchAuth() {
@@ -12,4 +13,5 @@ export default function* watchAuth() {
   yield takeEvery(recipeTypes.GET_RECIPE_REQUEST, getRecipeStart);
   yield takeEvery(recipeTypes.CREATE_RECIPE_REQUEST, createRecipeStart);
   yield takeEvery(recipeTypes.UPDATE_RECIPE_REQUEST, updateRecipeStart);
+  yield takeEvery(recipeTypes.DELETE_RECIPE_REQUEST, deleteRecipeStart);
 }

@@ -21,7 +21,13 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
 }));
-const RecipesList = ({ items, isLoading, pageLoaded, fetchAllRecipes }) => {
+const RecipesList = ({
+  items,
+  isLoading,
+  pageLoaded,
+  fetchAllRecipes,
+  deleteRecipe,
+}) => {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
   const classes = useStyles();
@@ -44,6 +50,10 @@ const RecipesList = ({ items, isLoading, pageLoaded, fetchAllRecipes }) => {
     history.push("/recipes/add");
   };
 
+  const handleRemove = (id) => {
+    deleteRecipe({ id, history });
+  };
+
   let content;
 
   if (isLoading) {
@@ -59,7 +69,7 @@ const RecipesList = ({ items, isLoading, pageLoaded, fetchAllRecipes }) => {
           </Grid>
           {recipes.map((recipe) => (
             <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-              <RecipeCard recipe={recipe} />
+              <RecipeCard recipe={recipe} handleRemove={handleRemove} />
             </Grid>
           ))}
         </Grid>
@@ -94,6 +104,7 @@ RecipesList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   pageLoaded: PropTypes.func.isRequired,
   fetchAllRecipes: PropTypes.func.isRequired,
+  deleteRecipe: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesList);

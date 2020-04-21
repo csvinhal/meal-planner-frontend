@@ -26,17 +26,13 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, handleRemove }) => {
   const classes = useStyles();
   const { path } = useRouteMatch();
   const history = useHistory();
 
   const handleEdit = () => {
     history.push(`${path}/${recipe.id}`);
-  };
-
-  const handleRemove = () => {
-    alert("Removeu");
   };
 
   return (
@@ -60,7 +56,11 @@ const RecipeCard = ({ recipe }) => {
         <Button size="small" color="primary" onClick={handleEdit}>
           Editar
         </Button>
-        <Button size="small" color="primary" onClick={handleRemove}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => handleRemove(recipe.id)}
+        >
           Remover
         </Button>
       </CardActions>
@@ -75,6 +75,7 @@ RecipeCard.propTypes = {
     image: PropTypes.string,
     description: PropTypes.string,
   }),
+  handleRemove: PropTypes.func.isRequired,
 };
 
 export default RecipeCard;

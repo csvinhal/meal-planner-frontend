@@ -7,6 +7,7 @@ import {
   fetchAllRecipes,
   getRecipe,
   updateRecipe,
+  deleteRecipe,
 } from "../shared/recipesApi";
 
 export function* fetchAllRecipesStart() {
@@ -99,4 +100,27 @@ export function* updateRecipeStart(action) {
   }
 }
 
-export default {};
+export function* deleteRecipeStart(action) {
+  try {
+    yield put(loadingActions.showLoader());
+    yield call(deleteRecipe, action.payload.id);
+    yield call(action.payload.history.push, "/recipes");
+    yield put(actions.deleteRecipeSucceeded());
+    yield put(
+      toastActions.showMessage({
+        severity: "success",
+        message: "Receita deletada com sucesso",
+      })
+    );
+  } catch (err) {
+    yield put(actions.deleteRecipeFailed(err.response.data));
+    yield put(
+      toastActions.showMessage({
+        severity: "error",
+        message: "Ocorreu um erro ao salvar a receita",
+      })
+    );
+  } finally {
+    yield put(loadingActions.closeLoader());
+  }
+}

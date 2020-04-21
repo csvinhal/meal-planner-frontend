@@ -14,6 +14,9 @@ export const types = {
   UPDATE_RECIPE_REQUEST: "[Recipe] Update a recipe requested",
   UPDATE_RECIPE_SUCCEEDED: "[Recipe] Update a recipe succeeded",
   UPDATE_RECIPE_FAILED: "[Recipe] Update a recipe failed",
+  DELETE_RECIPE_REQUEST: "[Recipe] Delete a recipe requested",
+  DELETE_RECIPE_SUCCEEDED: "[Recipe] Delete a recipe succeeded",
+  DELETE_RECIPE_FAILED: "[Recipe] Delete a recipe failed",
 };
 
 const initialState = fromJS({
@@ -104,5 +107,15 @@ export const actions = {
   }),
   updateRecipeFailed: () => ({
     type: types.UPDATE_RECIPE_FAILED,
+  }),
+  deleteRecipe: (payload) => ({
+    type: types.DELETE_RECIPE_REQUEST,
+    payload,
+  }),
+  deleteRecipeSucceeded: () => ({
+    type: types.DELETE_RECIPE_SUCCEEDED,
+  }),
+  deleteRecipeFailed: () => ({
+    type: types.DELETE_RECIPE_FAILED,
   }),
 };
