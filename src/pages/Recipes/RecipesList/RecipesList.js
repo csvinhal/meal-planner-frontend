@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import recipeNotFound from "../../../assets/images/receipt-not-found.svg";
+import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import { actions as recipeActions } from "../../../reducers/recipe";
 import RecipeCard from "./RecipeCard/RecipeCard";
@@ -29,6 +30,8 @@ const RecipesList = ({
   deleteRecipe,
 }) => {
   const [recipes, setRecipes] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
   const history = useHistory();
   const classes = useStyles();
 
@@ -51,7 +54,19 @@ const RecipesList = ({
   };
 
   const handleRemove = (id) => {
-    deleteRecipe({ id, history });
+    setIdToDelete(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setIdToDelete(null);
+  };
+
+  const handleConfirm = () => {
+    setOpen(false);
+    deleteRecipe({ id: idToDelete, history });
+    setIdToDelete(null);
   };
 
   let content;
@@ -88,7 +103,16 @@ const RecipesList = ({
     );
   }
 
-  return content;
+  return (
+    <div>
+      <DeleteDialog
+        open={open}
+        handleClose={handleClose}
+        handleConfirm={handleConfirm}
+      ></DeleteDialog>
+      {content}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => ({
@@ -101,6 +125,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 RecipesList.propTypes = {
+  items: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   pageLoaded: PropTypes.func.isRequired,
   fetchAllRecipes: PropTypes.func.isRequired,

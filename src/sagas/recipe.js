@@ -10,7 +10,7 @@ import {
   deleteRecipe,
 } from "../shared/recipesApi";
 
-export function* fetchAllRecipesStart() {
+export function* onFetchAllRecipes() {
   try {
     yield put(loadingActions.showLoader());
     const response = yield call(fetchAllRecipes);
@@ -28,7 +28,7 @@ export function* fetchAllRecipesStart() {
   }
 }
 
-export function* getRecipeStart(action) {
+export function* onGetRecipe(action) {
   try {
     yield put(loadingActions.showLoader());
     const response = yield call(getRecipe, action.payload);
@@ -46,7 +46,7 @@ export function* getRecipeStart(action) {
   }
 }
 
-export function* createRecipeStart(action) {
+export function* onCreateRecipe(action) {
   try {
     yield put(loadingActions.showLoader());
     const response = yield call(createRecipe, action.payload.item);
@@ -71,7 +71,7 @@ export function* createRecipeStart(action) {
   }
 }
 
-export function* updateRecipeStart(action) {
+export function* onUpdateRecipe(action) {
   try {
     yield put(loadingActions.showLoader());
     const response = yield call(
@@ -100,11 +100,10 @@ export function* updateRecipeStart(action) {
   }
 }
 
-export function* deleteRecipeStart(action) {
+export function* onDeleteRecipe(action) {
   try {
     yield put(loadingActions.showLoader());
     yield call(deleteRecipe, action.payload.id);
-    yield call(action.payload.history.push, "/recipes");
     yield put(actions.deleteRecipeSucceeded());
     yield put(
       toastActions.showMessage({
@@ -118,6 +117,21 @@ export function* deleteRecipeStart(action) {
       toastActions.showMessage({
         severity: "error",
         message: "Ocorreu um erro ao salvar a receita",
+      })
+    );
+  }
+}
+
+export function* onDeleteRecipeSucceeded() {
+  try {
+    const response = yield call(fetchAllRecipes);
+    yield put(actions.fetchAllRecipesSucceeded(response.data.results));
+  } catch (err) {
+    yield put(actions.fetchAllRecipesFailed());
+    yield put(
+      toastActions.showMessage({
+        severity: "error",
+        message: "Ocorreu um erro ao buscar receitas",
       })
     );
   } finally {
