@@ -1,5 +1,6 @@
-import { Button, Grid, Paper, Fab } from "@material-ui/core";
+import { Button, Fab, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -8,8 +9,8 @@ import { bindActionCreators } from "redux";
 import recipeNotFound from "../../../assets/images/recipe-not-found.svg";
 import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
+import Header from "../../../components/Header/Header";
 import { actions as recipeActions } from "../../../reducers/recipe";
-import AddIcon from "@material-ui/icons/Add";
 import RecipeCard from "./RecipeCard/RecipeCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -90,33 +91,36 @@ const RecipesList = ({
     content = <></>;
   } else if (recipes && recipes.length) {
     content = (
-      <Paper elevation={2} className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Button
-              className={classes.button}
-              variant="contained"
+      <>
+        <Header title="Receitas" />
+        <Paper elevation={2} className={classes.paper}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                onClick={handlerAdd}
+              >
+                Adicionar
+              </Button>
+            </Grid>
+            {recipes.map((recipe) => (
+              <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
+                <RecipeCard recipe={recipe} handleRemove={handleRemove} />
+              </Grid>
+            ))}
+            <Fab
+              className={classes.fabButton}
               color="primary"
+              aria-label="add"
               onClick={handlerAdd}
             >
-              Adicionar
-            </Button>
+              <AddIcon />
+            </Fab>
           </Grid>
-          {recipes.map((recipe) => (
-            <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-              <RecipeCard recipe={recipe} handleRemove={handleRemove} />
-            </Grid>
-          ))}
-          <Fab
-            className={classes.fabButton}
-            color="primary"
-            aria-label="add"
-            onClick={handlerAdd}
-          >
-            <AddIcon />
-          </Fab>
-        </Grid>
-      </Paper>
+        </Paper>
+      </>
     );
   } else {
     content = (
