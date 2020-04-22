@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidenav = ({ open, handleDrawerClose }) => {
+const Sidenav = ({ open, handleDrawerClose, handleSignOut }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -60,7 +60,10 @@ const Sidenav = ({ open, handleDrawerClose }) => {
         </IconButton>
       </div>
       <Divider />
-      <ListItems handleDrawerClose={handleDrawerClose}></ListItems>
+      <ListItems
+        handleDrawerClose={handleDrawerClose}
+        handleSignOut={handleSignOut}
+      ></ListItems>
     </Drawer>
   );
 };
@@ -68,6 +71,7 @@ const Sidenav = ({ open, handleDrawerClose }) => {
 Sidenav.propTypes = {
   open: PropTypes.bool.isRequired,
   handleDrawerClose: PropTypes.func.isRequired,
+  handleSignOut: PropTypes.func.isRequired,
 };
 
 export default Sidenav;
