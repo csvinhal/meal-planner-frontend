@@ -1,17 +1,39 @@
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { Button, Fab, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import { Pagination } from "@material-ui/lab";
+import { gql } from "apollo-boost";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { bindActionCreators } from "redux";
 import recipeNotFound from "../../../assets/images/recipe-not-found.svg";
 import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import Header from "../../../components/Header/Header";
-import { actions as recipeActions } from "../../../reducers/recipe";
+import Loading from "../../../components/Loading/Loading";
 import RecipeCard from "./RecipeCard/RecipeCard";
+
+const RECIPES = gql`
+  query($offset: Int, $limit: Int) {
+    recipes(offset: $offset, limit: $limit) {
+      records {
+        id
+        recipeName
+        description
+      }
+      total
+    }
+  }
+`;
+
+const DELETE_RECIPE = gql`
+  mutation($id: ID!) {
+    deleteRecipe(id: $id) {
+      success
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +51,15 @@ const useStyles = makeStyles((theme) => ({
       display: "block",
     },
   },
+  paginator: {
+    display: "flex",
+    flexWrap: "nowrap",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      justifyContent: "flex-end",
+    },
+  },
   fabButton: {
     position: "fixed",
     right: theme.spacing(2),
@@ -38,32 +69,35 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const RecipesList = ({
-  items,
-  isLoading,
-  pageLoaded,
-  fetchAllRecipes,
-  deleteRecipe,
-}) => {
-  const [recipes, setRecipes] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [idToDelete, setIdToDelete] = useState(null);
+
+const RecipesList = () => {
+  const [limit] = useState(10);
+  const { loading, data, fetchMore, refetch } = useQuery(RECIPES, {
+    variables: { offset: 0, limit },
+  });
+  const [deleteRecipe] = useMutation(DELETE_RECIPE);
+  const [page, setPage] = useState(1);
   const history = useHistory();
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
 
-  useEffect(() => {
-    pageLoaded();
-  }, [pageLoaded]);
+  if (loading) return <Loading open />;
 
-  useEffect(() => {
-    fetchAllRecipes();
-  }, [fetchAllRecipes]);
+  const { recipes } = data;
+  const { records, total } = recipes;
 
-  useEffect(() => {
-    if (items) {
-      setRecipes(items);
+  const getOffset = (page) => {
+    return (page - 1) * 10;
+  };
+
+  const getTotalPages = (totalRecords) => {
+    const totalPages = Math.ceil(totalRecords / 10);
+    if (totalPages > 5) {
+      return 5;
     }
-  }, [items]);
+    return totalPages;
+  };
 
   const handlerAdd = () => {
     history.push("/recipes/add");
@@ -79,18 +113,42 @@ const RecipesList = ({
     setIdToDelete(null);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setOpen(false);
-    deleteRecipe({ id: idToDelete, history });
+    await deleteRecipe({
+      variables: { id: idToDelete },
+    });
+    await refetch({
+      offset: getOffset(page),
+      limit,
+    });
     setIdToDelete(null);
   };
 
+  const handleChangePage = (event, value) => {
+    setPage(value);
+    fetchMore({
+      variables: {
+        offset: getOffset(value),
+        limit,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          recipes: { ...prev.recipes, ...fetchMoreResult.recipes },
+        });
+      },
+    });
+  };
+
+  const offset = getOffset(page);
+  const first = offset + 1;
+  const last = Math.min(offset + limit, total);
+
   let content;
 
-  if (isLoading) {
-    content = <></>;
-  } else if (recipes && recipes.length) {
-    content = (
+  if (records.length) {
+    content = content = (
       <>
         <Header title="Receitas" />
         <Paper elevation={2} className={classes.paper}>
@@ -105,11 +163,24 @@ const RecipesList = ({
                 Adicionar
               </Button>
             </Grid>
-            {recipes.map((recipe) => (
+            {records.map((recipe) => (
               <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
                 <RecipeCard recipe={recipe} handleRemove={handleRemove} />
               </Grid>
             ))}
+            <Grid item xs={12}>
+              <div className={classes.paginator}>
+                <span>
+                  {first}-{last} de {total}
+                </span>
+                <Pagination
+                  count={getTotalPages(total)}
+                  color="primary"
+                  page={page}
+                  onChange={handleChangePage}
+                />
+              </div>
+            </Grid>
             <Fab
               className={classes.fabButton}
               color="primary"
@@ -134,7 +205,6 @@ const RecipesList = ({
       />
     );
   }
-
   return (
     <div>
       <DeleteDialog
@@ -147,21 +217,6 @@ const RecipesList = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  items: state.recipe.get("items").toJS(),
-  isLoading: state.loader.get("open"),
-});
+RecipesList.propTypes = {};
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(recipeActions, dispatch),
-});
-
-RecipesList.propTypes = {
-  items: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  pageLoaded: PropTypes.func.isRequired,
-  fetchAllRecipes: PropTypes.func.isRequired,
-  deleteRecipe: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecipesList);
+export default connect(null, null)(RecipesList);

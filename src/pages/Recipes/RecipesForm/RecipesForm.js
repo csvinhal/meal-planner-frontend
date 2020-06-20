@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/react-hooks";
 import {
   Button,
   FormControl,
@@ -9,13 +10,48 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { gql } from "apollo-boost";
 import { useFormik } from "formik";
-import PropTypes from "prop-types";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { bindActionCreators } from "redux";
-import { actions as recipeActions } from "../../../reducers/recipe";
+import { useLazyQuery } from "@apollo/react-hooks";
+
+const CREATE__RECIPE = gql`
+  mutation($recipeName: String, $description: String) {
+    createRecipe(
+      input: { recipeName: $recipeName, description: $description }
+    ) {
+      recipe {
+        id
+        recipeName
+        description
+      }
+    }
+  }
+`;
+
+const UPDATE__RECIPE = gql`
+  mutation($id: ID!, $recipeName: String, $description: String) {
+    updateRecipe(
+      input: { id: $id, recipeName: $recipeName, description: $description }
+    ) {
+      recipe {
+        id
+        recipeName
+        description
+      }
+    }
+  }
+`;
+
+const RECIPE = gql`
+  query($id: ID!) {
+    recipe(id: $id) {
+      recipeName
+      description
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,16 +82,26 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
+const RecipesForm = () => {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
+  const [createRecipe] = useMutation(CREATE__RECIPE);
+  const [updateRecipe] = useMutation(UPDATE__RECIPE);
+  const [getRecipe, { data, loading }] = useLazyQuery(RECIPE);
+
+  useEffect(() => {
+    if (data && data.recipe && !loading) {
+      setRecipe(data.recipe);
+    }
+  }, [data, loading]);
 
   useEffect(() => {
     if (id) {
-      getRecipe(id);
+      getRecipe({ variables: { id } });
     }
-  }, [id, getRecipe]);
+  }, [id]);
 
   const formik = useFormik({
     initialValues: {
@@ -65,10 +111,17 @@ const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
     },
     validate,
     onSubmit: (values) => {
+      const { recipeName, description } = values;
       if (id) {
-        updateRecipe({ id, item: values, history });
+        updateRecipe({
+          variables: { id, recipeName, description },
+        }).then(() => {
+          history.push("/recipes");
+        });
       } else {
-        createRecipe({ item: values, history });
+        createRecipe({ variables: { recipeName, description } }).then(() => {
+          history.push("/recipes");
+        });
       }
     },
   });
@@ -76,16 +129,16 @@ const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
   const { setFormikState } = formik;
 
   useEffect(() => {
-    if (item) {
+    if (recipe) {
       setFormikState((prevState) => ({
         ...prevState,
         values: {
           ...prevState.values,
-          ...item,
+          ...recipe,
         },
       }));
     }
-  }, [item, setFormikState]);
+  }, [recipe, setFormikState]);
 
   const goBack = () => {
     history.push("/recipes");
@@ -159,19 +212,6 @@ const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  item: state.recipe.get("item").toJS(),
-});
+RecipesForm.propTypes = {};
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(recipeActions, dispatch),
-});
-
-RecipesForm.propTypes = {
-  item: PropTypes.object,
-  getRecipe: PropTypes.func.isRequired,
-  createRecipe: PropTypes.func.isRequired,
-  updateRecipe: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecipesForm);
+export default RecipesForm;
