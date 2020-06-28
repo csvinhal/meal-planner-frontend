@@ -113,8 +113,6 @@ const RecipesList = () => {
     getRecipes();
   }, [getRecipes]);
 
-  openToast("Receita deletada com sucesso", "success");
-  
   const getTotalPages = (totalRecords) => {
     const totalPages = Math.ceil(totalRecords / 10);
     if (totalPages > 5) {

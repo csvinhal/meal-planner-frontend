@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { toastMutations } from "../../../apollo/operations/mutations/toast";
 
 const CREATE__RECIPE = gql`
   mutation($recipeName: String!, $description: String) {
@@ -88,6 +89,7 @@ const RecipesForm = () => {
   const [createRecipe] = useMutation(CREATE__RECIPE);
   const [updateRecipe] = useMutation(UPDATE__RECIPE);
   const [getRecipe, { data, loading }] = useLazyQuery(RECIPE);
+  const { openToast } = toastMutations;
 
   useEffect(() => {
     if (data && data.recipe && !loading) {
@@ -114,10 +116,12 @@ const RecipesForm = () => {
         updateRecipe({
           variables: { id, recipeName, description },
         }).then(() => {
+          openToast("Receita salva com sucesso!", "success");
           history.push("/recipes");
         });
       } else {
         createRecipe({ variables: { recipeName, description } }).then(() => {
+          openToast("Receita alterada com sucesso!", "success");
           history.push("/recipes");
         });
       }
