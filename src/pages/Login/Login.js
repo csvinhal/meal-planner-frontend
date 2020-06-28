@@ -15,7 +15,6 @@ import { useFormik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import authentication from "../../assets/images/authentication.svg";
-import { useStateValue } from "../../context/StateContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +65,7 @@ const validate = (values) => {
 };
 
 const Login = () => {
-  const [, dispatch] = useStateValue();
+  // const [, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
 
@@ -83,7 +82,7 @@ const Login = () => {
           username,
           password,
         });
-        dispatch({ type: "signed_in", user });
+        // dispatch({ type: "signed_in", user });
         history.push("/");
       } catch (error) {
         let err = null;

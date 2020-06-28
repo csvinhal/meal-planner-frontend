@@ -1,7 +1,8 @@
+import { Query } from "@apollo/react-components";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import React from "react";
+import React, { Fragment } from "react";
+import { GET_LOADER } from "../../apollo/operations/queries";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -10,18 +11,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Loading = ({ open }) => {
+const Loading = () => {
   const classes = useStyles();
 
   return (
-    <Backdrop className={classes.backdrop} open={open}>
-      <CircularProgress color="inherit" />
-    </Backdrop>
+    <Query query={GET_LOADER}>
+      {({ data }) => (
+        <Fragment>
+          <Backdrop className={classes.backdrop} open={data.loader.open}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </Fragment>
+      )}
+    </Query>
   );
 };
 
-Loading.propTypes = {
-  open: PropTypes.bool.isRequired,
-};
+Loading.propTypes = {};
 
 export default Loading;

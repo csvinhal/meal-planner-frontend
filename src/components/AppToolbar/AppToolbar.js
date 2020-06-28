@@ -4,7 +4,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -13,7 +13,6 @@ import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useStateValue } from "../../context/StateContext";
 import Sidenav from "../Sidenav/Sidenav";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppToolbar = () => {
-  const [, dispatch] = useStateValue();
+  // const [, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -74,7 +73,7 @@ const AppToolbar = () => {
   const handleSignOut = () => {
     handleMenuClose();
     Auth.signOut();
-    dispatch({ type: "signed_out" });
+    // dispatch({ type: "signed_out" });
     history.push("login");
   };
 

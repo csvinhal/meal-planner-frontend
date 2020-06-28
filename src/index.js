@@ -1,17 +1,10 @@
-import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/client";
 import Amplify from "aws-amplify";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { client } from "./apollo/config/client";
 import App from "./App";
-import { StateProvider } from "./context/StateContext";
 import "./index.scss";
-import loadingReducer from "./reducers/loading";
-import { initialState, reducer } from "./reducers/stateContext";
-import toastReducer from "./reducers/toast";
 import * as serviceWorker from "./serviceWorker";
 
 Amplify.configure({
@@ -30,25 +23,10 @@ Amplify.configure({
   },
 });
 
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_BASE_URL,
-});
-
-const rootReducer = combineReducers({
-  toast: toastReducer,
-  loader: loadingReducer,
-});
-
-const store = createStore(rootReducer, composeWithDevTools());
-
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Provider store={store}>
-        <StateProvider initialState={initialState} reducer={reducer}>
-          <App />
-        </StateProvider>
-      </Provider>
+      <App />
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")

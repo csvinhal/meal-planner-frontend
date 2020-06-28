@@ -1,17 +1,16 @@
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { Button, Fab, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import { Pagination } from "@material-ui/lab";
-import { gql } from "apollo-boost";
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { loaderMutations } from "../../../apollo/operations/mutations/loader";
+import { toastMutations } from "../../../apollo/operations/mutations/toast";
 import recipeNotFound from "../../../assets/images/recipe-not-found.svg";
 import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import Header from "../../../components/Header/Header";
-import Loading from "../../../components/Loading/Loading";
 import RecipeCard from "./RecipeCard/RecipeCard";
 
 const RECIPES = gql`
@@ -70,27 +69,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getOffset = (page) => {
+  return (page - 1) * 10;
+};
+
+const { openLoader, closeLoader } = loaderMutations;
+const { openToast } = toastMutations;
+
 const RecipesList = () => {
   const [limit] = useState(10);
-  const { loading, data, fetchMore, refetch } = useQuery(RECIPES, {
-    variables: { offset: 0, limit },
-  });
-  const [deleteRecipe] = useMutation(DELETE_RECIPE);
+  const [recipes, setRecipes] = useState([]);
+  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
 
-  if (loading) return <Loading open />;
+  const [getRecipes, { loading, data, fetchMore, refetch }] = useLazyQuery(
+    RECIPES,
+    {
+      variables: { offset: 0, limit },
+    }
+  );
+  const [deleteRecipe] = useMutation(DELETE_RECIPE, {
+    onCompleted() {
+      openToast("Receita deletada com sucesso", "success");
+      setIdToDelete(null);
+      refetch({ offset: getOffset(page), limit });
+    },
+  });
 
-  const { recipes } = data;
-  const { records, total } = recipes;
+  useEffect(() => {
+    if (!loading && data && data.recipes) {
+      const { recipes } = data;
+      const { records, total } = recipes;
+      setRecipes(records);
+      setTotal(total);
+    }
+  }, [loading, data]);
 
-  const getOffset = (page) => {
-    return (page - 1) * 10;
-  };
+  useEffect(() => {
+    getRecipes();
+  }, [getRecipes]);
 
+  openToast("Receita deletada com sucesso", "success");
+  
   const getTotalPages = (totalRecords) => {
     const totalPages = Math.ceil(totalRecords / 10);
     if (totalPages > 5) {
@@ -118,11 +142,6 @@ const RecipesList = () => {
     await deleteRecipe({
       variables: { id: idToDelete },
     });
-    await refetch({
-      offset: getOffset(page),
-      limit,
-    });
-    setIdToDelete(null);
   };
 
   const handleChangePage = (event, value) => {
@@ -147,11 +166,11 @@ const RecipesList = () => {
 
   let content;
 
-  if (records.length) {
+  if (recipes.length) {
     content = content = (
       <>
         <Header title="Receitas" />
-        <Paper elevation={2} className={classes.paper}>
+        <Paper elevation={0} className={classes.paper}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Button
@@ -163,7 +182,7 @@ const RecipesList = () => {
                 Adicionar
               </Button>
             </Grid>
-            {records.map((recipe) => (
+            {recipes.map((recipe) => (
               <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
                 <RecipeCard recipe={recipe} handleRemove={handleRemove} />
               </Grid>
@@ -219,4 +238,4 @@ const RecipesList = () => {
 
 RecipesList.propTypes = {};
 
-export default connect(null, null)(RecipesList);
+export default RecipesList;

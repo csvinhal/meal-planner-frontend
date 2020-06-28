@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/react-hooks";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import {
   Button,
   FormControl,
@@ -10,14 +10,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { gql } from "apollo-boost";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useLazyQuery } from "@apollo/react-hooks";
 
 const CREATE__RECIPE = gql`
-  mutation($recipeName: String, $description: String) {
+  mutation($recipeName: String!, $description: String) {
     createRecipe(
       input: { recipeName: $recipeName, description: $description }
     ) {
