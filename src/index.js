@@ -2,18 +2,10 @@ import Amplify from "aws-amplify";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import createSagaMiddleware from "redux-saga";
 import App from "./App";
-import { StateProvider } from "./context/StateContext";
 import "./index.scss";
-import { initialState, reducer } from "./reducers/stateContext";
-import toastReducer from "./reducers/toast";
-import loadingReducer from "./reducers/loading";
-import recipeReducer from "./reducers/recipe";
+import { store } from "./reducers";
 import * as serviceWorker from "./serviceWorker";
-import watchAuth from "./sagas";
 
 Amplify.configure({
   Auth: {
@@ -31,27 +23,10 @@ Amplify.configure({
   },
 });
 
-const rootReducer = combineReducers({
-  toast: toastReducer,
-  loader: loadingReducer,
-  recipe: recipeReducer,
-});
-
-const sagaMiddleware = createSagaMiddleware();
-
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
-);
-
-sagaMiddleware.run(watchAuth);
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <StateProvider initialState={initialState} reducer={reducer}>
-        <App />
-      </StateProvider>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

@@ -1,16 +1,16 @@
 import { Button, Fab, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { bindActionCreators } from "redux";
 import recipeNotFound from "../../../assets/images/recipe-not-found.svg";
-import DeleteDialog from "../../../components/DeleteDialog/DeleteDialog";
 import EmptyState from "../../../components/EmptyState/EmptyState";
 import Header from "../../../components/Header/Header";
-import { actions as recipeActions } from "../../../reducers/recipe";
+import { actions as loaderActions } from "../../../reducers/loading";
+import { actions as toastActions } from "../../../reducers/toast";
+import { openDialog } from "../../../services/dialogService";
+import { deleteRecipe, getRecipes } from "../../../shared/recipesApi";
 import RecipeCard from "./RecipeCard/RecipeCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,58 +38,49 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-const RecipesList = ({
-  items,
-  isLoading,
-  pageLoaded,
-  fetchAllRecipes,
-  deleteRecipe,
-}) => {
+const RecipesList = () => {
   const [recipes, setRecipes] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [idToDelete, setIdToDelete] = useState(null);
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
 
-  useEffect(() => {
-    pageLoaded();
-  }, [pageLoaded]);
+  const fetchRecipes = useCallback(async () => {
+    dispatch(loaderActions.showLoader());
+    const { data } = await getRecipes();
+    setRecipes(data);
+    dispatch(loaderActions.closeLoader());
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchAllRecipes();
-  }, [fetchAllRecipes]);
+    fetchRecipes();
+  }, [fetchRecipes]);
 
-  useEffect(() => {
-    if (items) {
-      setRecipes(items);
-    }
-  }, [items]);
-
-  const handlerAdd = () => {
+  const handlerAdd = useCallback(() => {
     history.push("/recipes/add");
-  };
+  }, [history]);
 
-  const handleRemove = (id) => {
-    setIdToDelete(id);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setIdToDelete(null);
-  };
-
-  const handleConfirm = () => {
-    setOpen(false);
-    deleteRecipe({ id: idToDelete, history });
-    setIdToDelete(null);
-  };
+  const handleRemove = useCallback(
+    async (id) => {
+      const confirmed = await openDialog();
+      if (confirmed) {
+        dispatch(loaderActions.showLoader());
+        await deleteRecipe(id);
+        dispatch(
+          toastActions.showMessage({
+            severity: "success",
+            message: "Receita deletada com sucesso!",
+          })
+        );
+        await fetchRecipes();
+        dispatch(loaderActions.closeLoader());
+      }
+    },
+    [fetchRecipes, dispatch]
+  );
 
   let content;
 
-  if (isLoading) {
-    content = <></>;
-  } else if (recipes && recipes.length) {
+  if (recipes && recipes.length) {
     content = (
       <>
         <Header title="Receitas" />
@@ -106,8 +97,11 @@ const RecipesList = ({
               </Button>
             </Grid>
             {recipes.map((recipe) => (
-              <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-                <RecipeCard recipe={recipe} handleRemove={handleRemove} />
+              <Grid key={recipe._id} item xs={12} sm={6} md={4} lg={3}>
+                <RecipeCard
+                  recipe={recipe}
+                  handleRemove={() => handleRemove(recipe._id)}
+                />
               </Grid>
             ))}
             <Fab
@@ -135,33 +129,9 @@ const RecipesList = ({
     );
   }
 
-  return (
-    <div>
-      <DeleteDialog
-        open={open}
-        handleClose={handleClose}
-        handleConfirm={handleConfirm}
-      ></DeleteDialog>
-      {content}
-    </div>
-  );
+  return <Fragment>{content}</Fragment>;
 };
 
-const mapStateToProps = (state) => ({
-  items: state.recipe.get("items").toJS(),
-  isLoading: state.loader.get("open"),
-});
+RecipesList.propTypes = {};
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(recipeActions, dispatch),
-});
-
-RecipesList.propTypes = {
-  items: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  pageLoaded: PropTypes.func.isRequired,
-  fetchAllRecipes: PropTypes.func.isRequired,
-  deleteRecipe: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecipesList);
+export default RecipesList;

@@ -6,14 +6,28 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import PropTypes from "prop-types";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "../../reducers/dialog";
 
-const DeleteDialog = ({ open, title, message, handleClose, handleConfirm }) => {
+const DeleteDialog = () => {
+  const dispatch = useDispatch();
+  const {
+    open,
+    title,
+    message,
+    handleConfirm,
+  } = useSelector((state) => state.dialog.toJS());
+
+  const handleClose = (confirmed) => {
+      handleConfirm(confirmed);
+    dispatch(actions.closeDialog());
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={() => handleClose(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -24,10 +38,14 @@ const DeleteDialog = ({ open, title, message, handleClose, handleConfirm }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={() => handleClose(false)} color="primary">
           Cancelar
         </Button>
-        <Button onClick={handleConfirm} color="primary" autoFocus>
+        <Button
+          onClick={() => handleClose(true)}
+          color="primary"
+          autoFocus
+        >
           Deletar
         </Button>
       </DialogActions>
@@ -35,17 +53,6 @@ const DeleteDialog = ({ open, title, message, handleClose, handleConfirm }) => {
   );
 };
 
-DeleteDialog.defaultProps = {
-    title: 'Deseja realmente deletar?',
-    message: 'Uma vez que o item for deletado ele não poderá ser restaurado' 
-}
-
-DeleteDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  title: PropTypes.string,
-  message: PropTypes.string,
-  handleClose: PropTypes.func.isRequired,
-  handleConfirm: PropTypes.func.isRequired,
-};
+DeleteDialog.propTypes = {};
 
 export default DeleteDialog;

@@ -4,12 +4,12 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
 import PropTypes from "prop-types";
-import imageNotFound from "../../../../assets/images/image-not-found.svg";
+import React, { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import imageNotFound from "../../../../assets/images/image-not-found.svg";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -31,9 +31,12 @@ const RecipeCard = ({ recipe, handleRemove }) => {
   const { path } = useRouteMatch();
   const history = useHistory();
 
-  const handleEdit = () => {
-    history.push(`${path}/${recipe.id}`);
-  };
+  const handleEdit = useCallback(
+    (url) => {
+      history.push(url);
+    },
+    [history]
+  );
 
   return (
     <Card className={classes.root}>
@@ -53,13 +56,17 @@ const RecipeCard = ({ recipe, handleRemove }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" onClick={handleEdit}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => handleEdit(`${path}/${recipe._id}`)}
+        >
           Editar
         </Button>
         <Button
           size="small"
           color="primary"
-          onClick={() => handleRemove(recipe.id)}
+          onClick={() => handleRemove(recipe._id)}
         >
           Remover
         </Button>
@@ -70,7 +77,7 @@ const RecipeCard = ({ recipe, handleRemove }) => {
 
 RecipeCard.propTypes = {
   recipe: PropTypes.shape({
-    id: PropTypes.string,
+    _id: PropTypes.string,
     recipeName: PropTypes.string,
     image: PropTypes.string,
     description: PropTypes.string,

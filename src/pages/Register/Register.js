@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import signIn from "../../assets/images/sign-in.svg";
 
@@ -95,14 +95,13 @@ const Register = () => {
     onSubmit: async (values) => {
       const { username, password, email } = values;
       try {
-        const signUpResponse = await Auth.signUp({
+        await Auth.signUp({
           username,
           password,
           attributes: {
             email,
           },
         });
-        console.log(signUpResponse);
         history.push("/");
       } catch (error) {
         let err = null;
@@ -112,9 +111,9 @@ const Register = () => {
     },
   });
 
-  const handleBackToSignIn = () => {
+  const handleBackToSignIn = useCallback(() => {
     history.push("/login");
-  };
+  }, [history]);
 
   return (
     <div className={clsx("page", classes.root)}>

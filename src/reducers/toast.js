@@ -19,7 +19,7 @@ const showMessage = (state, action) => {
 };
 
 const closeMessage = (state) => {
-  return state.set("open", false).set("severity", "success").set("message", "");
+  return state.set("open", false).set("severity", "success");
 };
 
 export default (state = initialState, action) => {

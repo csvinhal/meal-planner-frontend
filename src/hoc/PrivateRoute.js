@@ -1,53 +1,56 @@
 import { Auth } from "aws-amplify";
-import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import React, { useMemo, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
-import { useStateValue } from "../context/StateContext";
+import Loading from "../components/Loading/Loading";
 import Axios from "../shared/requestsConfig";
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
-  const [, dispatch] = useStateValue();
-  const [authenticated, setAuthenticated] = useState(true);
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const [authenticated, setAuthenticated] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-  useEffect(() => {
-    const onLoad = async () => {
-      try {
-        const session = await Auth.currentSession();
-        const user = await Auth.currentAuthenticatedUser();
+  useMemo(async () => {
+    try {
+      const session = await Auth.currentSession();
+      if (session.isValid()) {
         Axios.defaults.headers.common["Authorization"] = `Bearer ${
           session.getIdToken().jwtToken
         }`;
-        setIsAuthenticating(false);
         setAuthenticated(true);
-        dispatch({ type: "session_authenticated", user });
-      } catch (err) {
+      } else {
         setAuthenticated(false);
-        setIsAuthenticating(false);
-        console.log(err);
       }
-    };
+      setIsAuthenticating(false);
+    } catch (err) {
+      setAuthenticated(false);
+      setIsAuthenticating(false);
+    }
+  }, []);
 
-    onLoad();
-  }, [dispatch]);
+  if (isAuthenticating) {
+    return <Loading open={true} />;
+  }
 
   return (
-    !isAuthenticating && (
-      <Route
-        {...rest}
-        render={(props) =>
-          authenticated ? (
-            <Component {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-              }}
-            />
-          )
-        }
-      />
-    )
+    <Route
+      {...rest}
+      render={(props) =>
+        authenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+            }}
+          />
+        )
+      }
+    />
   );
+};
+
+PrivateRoute.propTypes = {
+  component: PropTypes.any.isRequired,
 };
 
 export default PrivateRoute;

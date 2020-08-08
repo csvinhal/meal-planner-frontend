@@ -5,17 +5,21 @@ import {
   Grid,
   Input,
   InputLabel,
-  Paper,
+  Paper
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useFormik } from "formik";
-import PropTypes from "prop-types";
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { bindActionCreators } from "redux";
-import { actions as recipeActions } from "../../../reducers/recipe";
+import { actions as loaderActions } from "../../../reducers/loading";
+import { actions as toastActions } from "../../../reducers/toast";
+import {
+  createRecipe,
+  getRecipe,
+  updateRecipe
+} from "../../../shared/recipesApi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,50 +50,73 @@ const validate = (values) => {
   return errors;
 };
 
-const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
+const RecipesForm = () => {
+  const dispatch = useDispatch();
+  const [recipe, setRecipe] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
-    if (id) {
-      getRecipe(id);
-    }
-  }, [id, getRecipe]);
+    const fetchRecipe = async () => {
+      dispatch(loaderActions.showLoader());
+      if (id) {
+        const { data } = await getRecipe(id);
+        setRecipe(data);
+      }
+      dispatch(loaderActions.closeLoader());
+    };
+    fetchRecipe();
+  }, [id, setRecipe, dispatch]);
 
   const formik = useFormik({
     initialValues: {
-      id: "",
+      _id: "",
       recipeName: "",
       description: "",
     },
     validate,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      dispatch(loaderActions.showLoader());
       if (id) {
-        updateRecipe({ id, item: values, history });
+        await updateRecipe(id, values);
+        dispatch(
+          toastActions.showMessage({
+            severity: "success",
+            message: "Receita atualizada com sucesso!",
+          })
+        );
       } else {
-        createRecipe({ item: values, history });
+        await createRecipe(values);
+        dispatch(
+          toastActions.showMessage({
+            severity: "success",
+            message: "Receita salva com sucesso!",
+          })
+        );
       }
+      dispatch(loaderActions.closeLoader());
+      history.push("/recipes");
     },
   });
 
   const { setFormikState } = formik;
 
   useEffect(() => {
-    if (item) {
+    if (recipe) {
       setFormikState((prevState) => ({
         ...prevState,
         values: {
           ...prevState.values,
-          ...item,
+          ...recipe,
         },
       }));
     }
-  }, [item, setFormikState]);
+  }, [setFormikState, recipe]);
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     history.push("/recipes");
-  };
+  }, [history]);
 
   return (
     <Paper className={classes.paper}>
@@ -159,19 +186,6 @@ const RecipesForm = ({ item, getRecipe, createRecipe, updateRecipe }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  item: state.recipe.get("item").toJS(),
-});
+RecipesForm.propTypes = {};
 
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators(recipeActions, dispatch),
-});
-
-RecipesForm.propTypes = {
-  item: PropTypes.object,
-  getRecipe: PropTypes.func.isRequired,
-  createRecipe: PropTypes.func.isRequired,
-  updateRecipe: PropTypes.func.isRequired,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecipesForm);
+export default RecipesForm;

@@ -13,7 +13,6 @@ import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useStateValue } from "../../context/StateContext";
 import Sidenav from "../Sidenav/Sidenav";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppToolbar = () => {
-  const [, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -71,10 +69,9 @@ const AppToolbar = () => {
     setOpen(false);
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     handleMenuClose();
-    Auth.signOut();
-    dispatch({ type: "signed_out" });
+    await Auth.signOut();
     history.push("login");
   };
 

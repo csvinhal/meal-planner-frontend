@@ -12,10 +12,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Auth } from "aws-amplify";
 import clsx from "clsx";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import authentication from "../../assets/images/authentication.svg";
-import { useStateValue } from "../../context/StateContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +65,6 @@ const validate = (values) => {
 };
 
 const Login = () => {
-  const [, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
 
@@ -79,11 +77,10 @@ const Login = () => {
     onSubmit: async (values) => {
       const { username, password } = values;
       try {
-        const user = await Auth.signIn({
+        await Auth.signIn({
           username,
           password,
         });
-        dispatch({ type: "signed_in", user });
         history.push("/");
       } catch (error) {
         let err = null;
@@ -93,9 +90,9 @@ const Login = () => {
     },
   });
 
-  const handleToSignUp = () => {
+  const handleToSignUp = useCallback(() => {
     history.push("register");
-  };
+  }, [history]);
 
   return (
     <div className={clsx("page", classes.root)}>

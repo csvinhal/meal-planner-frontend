@@ -1,7 +1,7 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Loading = ({ open }) => {
+const Loading = () => {
+  const { open } = useSelector((state) => state.loader.toJS());
   const classes = useStyles();
 
   return (
@@ -18,10 +19,6 @@ const Loading = ({ open }) => {
       <CircularProgress color="inherit" />
     </Backdrop>
   );
-};
-
-Loading.propTypes = {
-  open: PropTypes.bool.isRequired,
 };
 
 export default Loading;
