@@ -1,7 +1,7 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "./App.scss";
 import Dialog from "./components/DeleteDialog/DeleteDialog";
@@ -10,6 +10,7 @@ import Toast from "./components/Toast/Toast";
 import PrivateRoute from "./hoc/PrivateRoute";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import MealsPlan from "./pages/MealsPlan/MealsPlan";
 import Recipes from "./pages/Recipes/Recipes";
 import Register from "./pages/Register/Register";
 
@@ -46,7 +47,9 @@ function App() {
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/login" component={Login} />
                     <PrivateRoute path="/recipes" component={Recipes} />
+                    <PrivateRoute path="/meals-plan" component={MealsPlan} />
                     <PrivateRoute path="/" component={Home} exact />
+                    <Redirect to="/" />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>

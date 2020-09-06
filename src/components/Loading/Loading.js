@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Loading = () => {
-  const { open } = useSelector((state) => state.loader.toJS());
+  const loaderSelector = useSelector((state) => state.loader);
+  const open = loaderSelector.get("open");
   const classes = useStyles();
 
   return (

@@ -4,11 +4,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/core/styles";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EventIcon from "@material-ui/icons/Event";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/HomeOutlined";
 import ReceiptIcon from "@material-ui/icons/ReceiptOutlined";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
 const ListItems = ({ handleDrawerClose, handleSignOut }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-    handleDrawerClose();
-  };
+  const handleListItemClick = useCallback(
+    (event, index) => {
+      setSelectedIndex(index);
+      handleDrawerClose();
+    },
+    [setSelectedIndex, handleDrawerClose]
+  );
 
   const classes = useStyles();
   return (
@@ -47,9 +51,22 @@ const ListItems = ({ handleDrawerClose, handleSignOut }) => {
         <ListItem
           button
           component={Link}
-          to="/recipes"
+          to="/meals-plan"
           selected={selectedIndex === 2}
           onClick={(event) => handleListItemClick(event, 2)}
+        >
+          <ListItemIcon>
+            <EventIcon />
+          </ListItemIcon>
+          <ListItemText primary="Planejador" />
+        </ListItem>
+
+        <ListItem
+          button
+          component={Link}
+          to="/recipes"
+          selected={selectedIndex === 3}
+          onClick={(event) => handleListItemClick(event, 3)}
         >
           <ListItemIcon>
             <ReceiptIcon />
@@ -59,11 +76,7 @@ const ListItems = ({ handleDrawerClose, handleSignOut }) => {
 
         <Divider />
 
-        <ListItem
-          button
-          selected={selectedIndex === 3}
-          onClick={handleSignOut}
-        >
+        <ListItem button selected={selectedIndex === 3} onClick={handleSignOut}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
