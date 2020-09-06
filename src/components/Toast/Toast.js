@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../../reducers/toast";
 
 const Toast = () => {
-  const { open, message, severity } = useSelector((state) =>
-    state.toast.toJS()
-  );
+  const toastSelector = useSelector((state) => state.toast);
   const dispatch = useDispatch();
+  const open = toastSelector.get("open");
+  const message = toastSelector.get("message");
+  const severity = toastSelector.get("severity");
 
   const handleToastClose = useCallback(
     (event, reason) => {

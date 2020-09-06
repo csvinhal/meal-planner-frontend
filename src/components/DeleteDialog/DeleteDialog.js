@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,15 +12,14 @@ import { actions } from "../../reducers/dialog";
 
 const DeleteDialog = () => {
   const dispatch = useDispatch();
-  const {
-    open,
-    title,
-    message,
-    handleConfirm,
-  } = useSelector((state) => state.dialog.toJS());
+  const dialogSelector = useSelector((state) => state.dialog);
+  const open = dialogSelector.get("open");
+  const title = dialogSelector.get("title");
+  const message = dialogSelector.get("message");
+  const handleConfirm = dialogSelector.get("handleConfirm");
 
   const handleClose = (confirmed) => {
-      handleConfirm(confirmed);
+    handleConfirm(confirmed);
     dispatch(actions.closeDialog());
   };
 
@@ -41,11 +40,7 @@ const DeleteDialog = () => {
         <Button onClick={() => handleClose(false)} color="primary">
           Cancelar
         </Button>
-        <Button
-          onClick={() => handleClose(true)}
-          color="primary"
-          autoFocus
-        >
+        <Button onClick={() => handleClose(true)} color="primary" autoFocus>
           Deletar
         </Button>
       </DialogActions>
