@@ -1,8 +1,11 @@
+import AppToolbar from "@components/AppToolbar/AppToolbar";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
-import AppToolbar from "../components/AppToolbar/AppToolbar";
-import PropTypes from "prop-types";
+import React, { FunctionComponent, ReactElement } from "react";
+
+interface Props {
+  children: ReactElement<any> | JSX.Element[];
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
 }));
 
-const Layout = ({ children }) => {
+const Layout: FunctionComponent<Props> = ({ children }: Props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -39,13 +42,6 @@ const Layout = ({ children }) => {
       </main>
     </div>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
 };
 
 export default Layout;

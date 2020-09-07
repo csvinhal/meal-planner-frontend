@@ -1,3 +1,11 @@
+import breakfast from "@assets/images/breakfast.jpeg";
+import morningSnack from "@assets/images/lanche-manha.jpg";
+import lunch from "@assets/images/lunch.jpg";
+import meal from "@assets/images/meal.jpeg";
+import snack from "@assets/images/snack.jpg";
+import supper from "@assets/images/supper.jpeg";
+import Header from "@components/Header/Header";
+import Layout from "@containers/Layout";
 import {
   Card,
   CardActionArea,
@@ -8,14 +16,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import breakfast from "../../assets/images/breakfast.jpeg";
-import morningSnack from "../../assets/images/lanche-manha.jpg";
-import lunch from "../../assets/images/lunch.jpg";
-import meal from "../../assets/images/meal.jpeg";
-import snack from "../../assets/images/snack.jpg";
-import supper from "../../assets/images/supper.jpeg";
-import Header from "../../components/Header/Header";
-import Layout from "../../hoc/Layout";
 
 const useStyles = makeStyles((theme) => ({
   todaysMealHeader: {
@@ -119,7 +119,11 @@ const Home = () => {
 
           <Card className={classes.mealCard}>
             <CardActionArea>
-              <CardMedia className={classes.media} image={meal} title="Jantar" />
+              <CardMedia
+                className={classes.media}
+                image={meal}
+                title="Jantar"
+              />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   Jantar

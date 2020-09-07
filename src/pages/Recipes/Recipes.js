@@ -1,6 +1,6 @@
+import Layout from "@containers/Layout";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import Layout from "../../hoc/Layout";
 import RecipesForm from "./RecipesForm/RecipesForm";
 import RecipesList from "./RecipesList/RecipesList";
 

@@ -1,6 +1,6 @@
+import Layout from "@containers/Layout";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import Layout from "../../hoc/Layout";
 import Planner from "./Planner/Planner";
 import Recipes from "./Recipes/Recipes";
 
