@@ -1,8 +1,15 @@
 import { Button, Fab, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import PropTypes from "prop-types";
 import React from "react";
+
+interface Props {
+  title: string;
+  text: string;
+  image: string;
+  primaryActionLabel: string;
+  handlePrimaryAction: (...args: any[]) => any;
+}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,7 +52,7 @@ const EmptyState = ({
   image,
   primaryActionLabel,
   handlePrimaryAction,
-}) => {
+}: Props) => {
   const classes = useStyles();
   return (
     <div className={classes.paper}>
@@ -77,14 +84,6 @@ const EmptyState = ({
       </Fab>
     </div>
   );
-};
-
-EmptyState.propTypes = {
-  title: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  image: PropTypes.any.isRequired,
-  primaryActionLabel: PropTypes.string.isRequired,
-  handlePrimaryAction: PropTypes.func.isRequired,
 };
 
 export default EmptyState;

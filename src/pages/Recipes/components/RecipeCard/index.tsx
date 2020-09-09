@@ -1,15 +1,24 @@
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { createStyles, makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
-import React, { useCallback } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import imageNotFound from "../../../../assets/images/image-not-found.svg";
+import imageNotFound from "@assets/images/image-not-found.svg"
+import Button from "@material-ui/core/Button"
+import Card from "@material-ui/core/Card"
+import CardActionArea from "@material-ui/core/CardActionArea"
+import CardActions from "@material-ui/core/CardActions"
+import CardContent from "@material-ui/core/CardContent"
+import CardMedia from "@material-ui/core/CardMedia"
+import { createStyles, makeStyles } from "@material-ui/core/styles"
+import Typography from "@material-ui/core/Typography"
+import React, { useCallback } from "react"
+import { useHistory, useRouteMatch } from "react-router-dom"
+
+interface Props {
+  recipe: {
+    _id: string
+    recipeName: string
+    image: string
+    description: string
+  }
+  handleRemove: (id: string) => any
+}
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -24,19 +33,19 @@ const useStyles = makeStyles((theme) =>
       backgroundSize: "contain",
     },
   })
-);
+)
 
-const RecipeCard = ({ recipe, handleRemove }) => {
-  const classes = useStyles();
-  const { path } = useRouteMatch();
-  const history = useHistory();
+const RecipeCard = ({ recipe, handleRemove }: Props) => {
+  const classes = useStyles()
+  const { path } = useRouteMatch()
+  const history = useHistory()
 
   const handleEdit = useCallback(
     (url) => {
-      history.push(url);
+      history.push(url)
     },
     [history]
-  );
+  )
 
   return (
     <Card className={classes.root}>
@@ -72,17 +81,7 @@ const RecipeCard = ({ recipe, handleRemove }) => {
         </Button>
       </CardActions>
     </Card>
-  );
-};
+  )
+}
 
-RecipeCard.propTypes = {
-  recipe: PropTypes.shape({
-    _id: PropTypes.string,
-    recipeName: PropTypes.string,
-    image: PropTypes.string,
-    description: PropTypes.string,
-  }),
-  handleRemove: PropTypes.func.isRequired,
-};
-
-export default RecipeCard;
+export default RecipeCard

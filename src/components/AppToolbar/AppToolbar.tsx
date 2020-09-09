@@ -1,3 +1,4 @@
+import Sidenav from "@components/Sidenav/Sidenav";
 import {
   AppBar,
   IconButton,
@@ -10,10 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Auth } from "aws-amplify";
-import clsx from "clsx";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import Sidenav from "../Sidenav/Sidenav";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const AppToolbar = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -57,7 +56,7 @@ const AppToolbar = () => {
     setAnchorEl(null);
   };
 
-  const handleProfileMenuOpen = (event) => {
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -100,7 +99,7 @@ const AppToolbar = () => {
             color="inherit"
             aria-label="abrir menu"
             onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.hide)}
+            className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
@@ -125,8 +124,8 @@ const AppToolbar = () => {
 
       <Sidenav
         open={open}
-        handleDrawerClose={handleDrawerClose.bind(this)}
-        handleSignOut={handleSignOut.bind(this)}
+        handleDrawerClose={handleDrawerClose}
+        handleSignOut={handleSignOut}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
-import NotFoundPage from "../pages/NotFound/pages/NotFound";
-import Recipes from "../pages/Recipes/Recipes";
+import NotFound from "../pages/NotFound";
+import Recipes from "../pages/Recipes";
 import Register from "../pages/Register/Register";
 import { AUTH_ONLY } from "./types";
 
@@ -35,6 +35,6 @@ export default () => [
   {
     path: "*",
     exact: true,
-    component: NotFoundPage,
+    component: NotFound,
   },
 ];

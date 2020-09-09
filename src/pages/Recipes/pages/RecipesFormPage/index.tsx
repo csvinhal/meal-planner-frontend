@@ -5,27 +5,23 @@ import {
   Grid,
   Input,
   InputLabel,
-  Paper
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import { useFormik } from "formik";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-import { actions as loaderActions } from "../../../reducers/loading";
-import { actions as toastActions } from "../../../reducers/toast";
-import {
-  createRecipe,
-  getRecipe,
-  updateRecipe
-} from "../../../shared/recipesApi";
+  Paper,
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import { createRecipe, getRecipe, updateRecipe } from '@shared/recipesApi'
+import { useFormik } from 'formik'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom'
+import { actions as loaderActions } from '../../../../reducers/loading'
+import { actions as toastActions } from '../../../../reducers/toast'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(4),
-    margin: "auto",
-    [theme.breakpoints.up("md")]: {
+    margin: 'auto',
+    [theme.breakpoints.up('md')]: {
       maxWidth: 560,
     },
   },
@@ -39,68 +35,68 @@ const useStyles = makeStyles((theme) => ({
   buttonBack: {
     marginLeft: theme.spacing(2),
   },
-}));
+}))
 
-const validate = (values) => {
-  const errors = {};
+const validate = (values: any) => {
+  const errors: { [error: string]: string } = {}
   if (!values.recipeName) {
-    errors.recipeName = "O campo é obrigatório";
+    errors.recipeName = 'O campo é obrigatório'
   }
 
-  return errors;
-};
+  return errors
+}
 
-const RecipesForm = () => {
-  const dispatch = useDispatch();
-  const [recipe, setRecipe] = useState(null);
-  const classes = useStyles();
-  const history = useHistory();
-  const { id } = useParams();
+const RecipesFormPage = () => {
+  const dispatch = useDispatch()
+  const [recipe, setRecipe] = useState<any>(null)
+  const classes = useStyles()
+  const history = useHistory()
+  const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      dispatch(loaderActions.showLoader());
+      dispatch(loaderActions.showLoader())
       if (id) {
-        const { data } = await getRecipe(id);
-        setRecipe(data);
+        const { data } = await getRecipe(id)
+        setRecipe(data)
       }
-      dispatch(loaderActions.closeLoader());
-    };
-    fetchRecipe();
-  }, [id, setRecipe, dispatch]);
+      dispatch(loaderActions.closeLoader())
+    }
+    fetchRecipe()
+  }, [id, setRecipe, dispatch])
 
   const formik = useFormik({
     initialValues: {
-      _id: "",
-      recipeName: "",
-      description: "",
+      _id: '',
+      recipeName: '',
+      description: '',
     },
     validate,
     onSubmit: async (values) => {
-      dispatch(loaderActions.showLoader());
+      dispatch(loaderActions.showLoader())
       if (id) {
-        await updateRecipe(id, values);
+        await updateRecipe(id, values)
         dispatch(
           toastActions.showMessage({
-            severity: "success",
-            message: "Receita atualizada com sucesso!",
-          })
-        );
+            severity: 'success',
+            message: 'Receita atualizada com sucesso!',
+          }),
+        )
       } else {
-        await createRecipe(values);
+        await createRecipe(values)
         dispatch(
           toastActions.showMessage({
-            severity: "success",
-            message: "Receita salva com sucesso!",
-          })
-        );
+            severity: 'success',
+            message: 'Receita salva com sucesso!',
+          }),
+        )
       }
-      dispatch(loaderActions.closeLoader());
-      history.push("/recipes");
+      dispatch(loaderActions.closeLoader())
+      history.push('/recipes')
     },
-  });
+  })
 
-  const { setFormikState } = formik;
+  const { setFormikState } = formik
 
   useEffect(() => {
     if (recipe) {
@@ -110,13 +106,13 @@ const RecipesForm = () => {
           ...prevState.values,
           ...recipe,
         },
-      }));
+      }))
     }
-  }, [setFormikState, recipe]);
+  }, [setFormikState, recipe])
 
   const goBack = useCallback(() => {
-    history.push("/recipes");
-  }, [history]);
+    history.push('/recipes')
+  }, [history])
 
   return (
     <Paper className={classes.paper}>
@@ -138,9 +134,8 @@ const RecipesForm = () => {
               <InputLabel htmlFor="ff-name">Nome</InputLabel>
               <Input
                 id="ff-name"
-                name="recipeName"
                 aria-describedby="ht-name"
-                {...formik.getFieldProps("recipeName")}
+                {...formik.getFieldProps('recipeName')}
               />
               {formik.touched.recipeName && formik.errors.recipeName ? (
                 <FormHelperText id="ht-name" error>
@@ -157,19 +152,13 @@ const RecipesForm = () => {
               <InputLabel htmlFor="ff-description">Descrição</InputLabel>
               <Input
                 id="ff-description"
-                name="description"
-                {...formik.getFieldProps("description")}
+                {...formik.getFieldProps('description')}
               />
             </FormControl>
           </Grid>
         </Grid>
         <div className={classes.buttonContainer}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+          <Button type="submit" variant="contained" color="primary">
             Salvar
           </Button>
           <Button
@@ -183,9 +172,7 @@ const RecipesForm = () => {
         </div>
       </form>
     </Paper>
-  );
-};
+  )
+}
 
-RecipesForm.propTypes = {};
-
-export default RecipesForm;
+export default RecipesFormPage

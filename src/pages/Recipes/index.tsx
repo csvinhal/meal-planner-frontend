@@ -1,11 +1,11 @@
-import Layout from "@containers/Layout";
-import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import RecipesForm from "./RecipesForm/RecipesForm";
-import RecipesList from "./RecipesList/RecipesList";
+import Layout from '@containers/Layout'
+import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import RecipesForm from './pages/RecipesFormPage'
+import RecipesList from './pages/RecipesListPage'
 
 const Recipes = () => {
-  const { path } = useRouteMatch();
+  const { path } = useRouteMatch()
   return (
     <div className="page">
       <Layout>
@@ -16,7 +16,7 @@ const Recipes = () => {
         </Switch>
       </Layout>
     </div>
-  );
-};
+  )
+}
 
-export default Recipes;
+export default Recipes
