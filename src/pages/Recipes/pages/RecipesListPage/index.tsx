@@ -1,14 +1,20 @@
 import { deleteRecipe, getRecipes } from '@shared/recipesApi'
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import React, {
+  Fragment,
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { actions as loaderActions } from '../../../../reducers/loading'
 import { actions as toastActions } from '../../../../reducers/toast'
-import { openDialog } from '../../../../services/dialogService'
+import openDialog from '../../../../services/dialogService'
 import RecipeEmptyState from '../../components/RecipeEmptyState'
 import RecipeList from '../../components/RecipeList'
 
-const RecipesList = () => {
+const RecipesList: FunctionComponent = () => {
   const [recipes, setRecipes] = useState([])
   const dispatch = useDispatch()
   const history = useHistory()

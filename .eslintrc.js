@@ -35,6 +35,7 @@ module.exports = {
       {
         endOfLine: 'auto',
       },
-    ]
+    ],
+    'react/no-array-index-key': 'off'
   },
 }

@@ -1,8 +1,8 @@
-import React from "react";
-import NotFoundPage from "./pages/NotFoundPage";
+import React, { FunctionComponent } from 'react'
+import NotFoundPage from './pages/NotFoundPage'
 
-const NotFound = () => {
-  return <NotFoundPage />;
-};
+const NotFound: FunctionComponent = () => {
+  return <NotFoundPage />
+}
 
-export default NotFound;
+export default NotFound

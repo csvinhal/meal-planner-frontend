@@ -1,9 +1,9 @@
-import Header from "@components/Header/Header"
-import { Button, Fab, Grid, Paper } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
-import AddIcon from "@material-ui/icons/Add"
-import React, { Fragment } from "react"
-import RecipeCard from "../RecipeCard"
+import Header from '@components/Header'
+import { Button, Fab, Grid, Paper } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import AddIcon from '@material-ui/icons/Add'
+import React, { Fragment } from 'react'
+import RecipeCard from '../RecipeCard'
 
 interface Props {
   recipes: any[]
@@ -14,25 +14,25 @@ interface Props {
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   emptyState: {
-    margin: "auto",
+    margin: 'auto',
   },
   button: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
   },
   fabButton: {
-    position: "fixed",
+    position: 'fixed',
     right: theme.spacing(2),
     bottom: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
     },
   },
 }))

@@ -5,7 +5,9 @@
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@containers/*": ["./src/containers/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@models/*": ["./src/models/*"],
+      "@reducers/*": ["./src/reducers/*"]
     }
   }
 }

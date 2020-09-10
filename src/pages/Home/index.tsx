@@ -1,11 +1,11 @@
-import breakfast from "@assets/images/breakfast.jpeg";
-import morningSnack from "@assets/images/lanche-manha.jpg";
-import lunch from "@assets/images/lunch.jpg";
-import meal from "@assets/images/meal.jpeg";
-import snack from "@assets/images/snack.jpg";
-import supper from "@assets/images/supper.jpeg";
-import Header from "@components/Header/Header";
-import Layout from "@containers/Layout";
+import breakfast from '@assets/images/breakfast.jpeg'
+import morningSnack from '@assets/images/lanche-manha.jpg'
+import lunch from '@assets/images/lunch.jpg'
+import meal from '@assets/images/meal.jpeg'
+import snack from '@assets/images/snack.jpg'
+import supper from '@assets/images/supper.jpeg'
+import Header from '@components/Header'
+import Layout from '@containers/Layout'
 import {
   Card,
   CardActionArea,
@@ -13,9 +13,9 @@ import {
   CardMedia,
   Grid,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import React, { FunctionComponent } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   todaysMealHeader: {
@@ -24,16 +24,16 @@ const useStyles = makeStyles((theme) => ({
   },
   mealCard: {
     maxWidth: 345,
-    margin: "auto",
+    margin: 'auto',
     marginTop: theme.spacing(2),
   },
   media: {
     height: 140,
   },
-}));
+}))
 
-const Home = () => {
-  const classes = useStyles();
+const Home: FunctionComponent = () => {
+  const classes = useStyles()
   return (
     <div className="page">
       <Layout>
@@ -155,7 +155,7 @@ const Home = () => {
         </Grid>
       </Layout>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
