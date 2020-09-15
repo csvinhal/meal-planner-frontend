@@ -9,7 +9,7 @@ module.exports = {
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
   ],
-  plugins: ['react', '@typescript-eslint', 'jest'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'jest'],
   env: {
     browser: true,
     es6: true,
@@ -36,6 +36,8 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    'react/no-array-index-key': 'off'
+    'react/no-array-index-key': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': ['off'],
+    'no-underscore-dangle': ['off'],
   },
 }

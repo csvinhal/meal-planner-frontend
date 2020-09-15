@@ -1,4 +1,5 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import Loading from '@components/Loading'
+import React, { useMemo } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GuardedRoute, GuardProvider } from 'react-router-guards'
 import { requireLogin } from './guards'
@@ -6,11 +7,11 @@ import getRoutes from './routes'
 
 const GLOBAL_GUARDS = [requireLogin]
 
-const Router: FunctionComponent = () => {
+const Router = () => {
   const routes = useMemo(() => getRoutes(), [])
   return (
     <BrowserRouter>
-      <GuardProvider guards={GLOBAL_GUARDS} loading="Loading...">
+      <GuardProvider guards={GLOBAL_GUARDS} loading={Loading}>
         <Route
           render={() => (
             <Switch>

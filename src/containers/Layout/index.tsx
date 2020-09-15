@@ -1,7 +1,7 @@
 import AppToolbar from '@components/AppToolbar/AppToolbar'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 
 interface Props {
   children: ReactElement<any> | JSX.Element[]
@@ -32,11 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Layout: FunctionComponent<Props> = ({
-  children,
-  maxWidth = 'lg',
-  fixed = false,
-}: Props) => {
+const Layout = ({ children, maxWidth, fixed }: Props) => {
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -54,6 +50,11 @@ const Layout: FunctionComponent<Props> = ({
       </main>
     </div>
   )
+}
+
+Layout.defaultProps = {
+  maxWidth: 'lg',
+  fixed: false,
 }
 
 export default Layout

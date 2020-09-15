@@ -1,9 +1,9 @@
+import Dialog from '@components/DeleteDialog/DeleteDialog'
+import FetchLoading from '@components/FetchLoading'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import './App.scss'
-import Dialog from '@components/DeleteDialog/DeleteDialog'
-import Loading from './components/Loading/Loading'
 import Toast from './components/Toast'
 import Router from './routes'
 
@@ -23,7 +23,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Loading />
+      <FetchLoading />
       <Toast />
       <Dialog />
       <div className="App">

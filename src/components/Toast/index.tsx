@@ -1,11 +1,11 @@
 import { Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import React, { FunctionComponent, useCallback } from 'react'
+import { RootReducer } from '@reducers/index'
+import { actions } from '@reducers/toast'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootReducer } from 'src/reducers'
-import { actions } from '../../reducers/toast'
 
-const Toast: FunctionComponent = () => {
+const Toast = () => {
   const { open, message, severity } = useSelector(
     (state: RootReducer) => state.toast,
   )
