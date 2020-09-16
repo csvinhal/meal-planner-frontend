@@ -1,6 +1,6 @@
 import Home from '../pages/home/pages/Home'
 import Login from '../pages/login/pages/Login'
-import MealsPlan from '../pages/mealsPlan'
+import MealsPlanPage from '../pages/mealsPlan/pages/MealPlannerPage'
 import PageNotFound from '../pages/pageNotFound/pages/PageNotFound/PageNotFound'
 import RecipesFormPage from '../pages/recipes/pages/RecipesFormPage'
 import RecipesListPage from '../pages/recipes/pages/RecipesListPage'
@@ -43,7 +43,7 @@ export default () => [
   {
     path: '/meals-plan',
     exact: true,
-    component: MealsPlan,
+    component: MealsPlanPage,
     meta: {
       [AUTH_ONLY]: true,
     },

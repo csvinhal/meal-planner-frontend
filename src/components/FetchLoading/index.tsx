@@ -1,22 +1,35 @@
-import { Backdrop, CircularProgress } from '@material-ui/core'
+import { Backdrop, CircularProgress, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { RootReducer } from '@reducers/index'
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  progress: {
+    marginBottom: theme.spacing(2),
   },
 }))
 
 const FetchLoading = () => {
   const classes = useStyles()
-  const { open } = useSelector((state: RootReducer) => state.loader)
   return (
-    <Backdrop className={classes.backdrop} open={open}>
-      <CircularProgress color="inherit" />
+    <Backdrop className={classes.backdrop} open>
+      <div className={classes.content}>
+        <CircularProgress className={classes.progress} color="inherit" />
+        <Typography variant="h5" component="h5">
+          Aguarde
+        </Typography>
+        <Typography variant="h6" component="h6">
+          Estamos carregando as informações
+        </Typography>
+      </div>
     </Backdrop>
   )
 }
