@@ -2,7 +2,7 @@ import Header from '@components/Header'
 import { Button, Fab, Grid, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
-import React, { Fragment } from 'react'
+import React from 'react'
 import RecipeCard from '../RecipeCard'
 
 interface Props {
@@ -41,7 +41,7 @@ const RecipeList = ({ recipes, handlerAdd, handleRemove }: Props) => {
   const classes = useStyles()
 
   return (
-    <Fragment>
+    <>
       <Header title="Receitas" />
       <Paper elevation={2} className={classes.paper}>
         <Grid container spacing={2}>
@@ -73,7 +73,7 @@ const RecipeList = ({ recipes, handlerAdd, handleRemove }: Props) => {
           </Fab>
         </Grid>
       </Paper>
-    </Fragment>
+    </>
   )
 }
 

@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import { Recipe } from '@models/recipes'
 import React from 'react'
 
 const useStyles = makeStyles((theme) =>
@@ -25,12 +26,7 @@ const useStyles = makeStyles((theme) =>
 )
 
 interface Props {
-  recipe: {
-    _id: string
-    recipeName: string
-    image: string
-    description: string
-  }
+  recipe: Recipe
 }
 
 const RecipeCard = ({ recipe }: Props) => {

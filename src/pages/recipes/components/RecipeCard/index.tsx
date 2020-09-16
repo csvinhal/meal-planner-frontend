@@ -67,6 +67,7 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
       <CardActions>
         <Button
           size="small"
+          variant="outlined"
           color="primary"
           onClick={() => handleEdit(`${path}/${recipe._id}`)}
         >
@@ -74,7 +75,7 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
         </Button>
         <Button
           size="small"
-          color="primary"
+          variant="outlined"
           onClick={() => handleRemove(recipe._id)}
         >
           Remover

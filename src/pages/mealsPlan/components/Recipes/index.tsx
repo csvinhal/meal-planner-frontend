@@ -1,5 +1,6 @@
 import { FormControl, Input, InputLabel } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { Recipe } from '@models/recipes'
 import { actions as loaderActions } from '@reducers/loading'
 import { getRecipes } from '@shared/recipesApi'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Recipes = () => {
   const classes = useStyles()
-  const [recipes, setRecipes] = useState([])
+  const [recipes, setRecipes] = useState<Recipe[]>()
   const dispatch = useDispatch()
 
   const fetchRecipes = useCallback(async () => {
@@ -44,8 +45,7 @@ const Recipes = () => {
           <Input id="ff-name" name="recipeName" aria-describedby="ht-name" />
         </FormControl>
       </div>
-      {recipes.map((recipe: any) => (
-        // eslint-disable-next-line no-underscore-dangle
+      {recipes?.map((recipe: Recipe) => (
         <RecipeCard key={recipe._id} recipe={recipe} />
       ))}
     </div>
