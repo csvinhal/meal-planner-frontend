@@ -1,4 +1,4 @@
-import AppToolbar from '@components/AppToolbar/AppToolbar'
+import AppToolbar from '@components/AppToolbar'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import React, { ReactElement } from 'react'

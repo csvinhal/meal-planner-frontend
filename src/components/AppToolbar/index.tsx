@@ -1,4 +1,4 @@
-import Sidenav from "@components/Sidenav/Sidenav";
+import Sidenav from '@components/Sidenav'
 import {
   AppBar,
   IconButton,
@@ -6,17 +6,17 @@ import {
   MenuItem,
   Toolbar,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MenuIcon from "@material-ui/icons/Menu";
-import { Auth } from "aws-amplify";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import MenuIcon from '@material-ui/icons/Menu'
+import { Auth } from 'aws-amplify'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -25,70 +25,70 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
   },
   sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
-}));
+}))
 
 const AppToolbar = () => {
-  const classes = useStyles();
-  const history = useHistory();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [open, setOpen] = useState(false);
+  const classes = useStyles()
+  const history = useHistory()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [open, setOpen] = useState(false)
 
-  const isMenuOpen = Boolean(anchorEl);
+  const isMenuOpen = Boolean(anchorEl)
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleSignOut = async () => {
-    handleMenuClose();
-    await Auth.signOut();
-    history.push("login");
-  };
+    handleMenuClose()
+    await Auth.signOut()
+    history.push('login')
+  }
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Minha conta</MenuItem>
       <MenuItem onClick={handleSignOut}>Sair</MenuItem>
     </Menu>
-  );
+  )
 
   return (
     <div className={classes.root}>
@@ -128,7 +128,7 @@ const AppToolbar = () => {
         handleSignOut={handleSignOut}
       />
     </div>
-  );
-};
+  )
+}
 
-export default AppToolbar;
+export default AppToolbar

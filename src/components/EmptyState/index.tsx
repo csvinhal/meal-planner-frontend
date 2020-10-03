@@ -1,50 +1,50 @@
-import { Button, Fab, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import React from "react";
+import { Button, Fab, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import AddIcon from '@material-ui/icons/Add'
+import React from 'react'
 
 interface Props {
-  title: string;
-  text: string;
-  image: string;
-  primaryActionLabel: string;
-  handlePrimaryAction: (...args: any[]) => any;
+  title: string
+  text: string
+  image: string
+  primaryActionLabel: string
+  handlePrimaryAction: (...args: any[]) => void
 }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   title: {
     marginTop: theme.spacing(3),
   },
   text: {
     marginTop: theme.spacing(1),
-    textAlign: "center",
+    textAlign: 'center',
   },
   image: {
-    height: "auto",
+    height: 'auto',
     width: 200,
   },
   fabButton: {
-    position: "fixed",
+    position: 'fixed',
     bottom: theme.spacing(2),
     right: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
     },
   },
   button: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
       marginTop: theme.spacing(2),
     },
   },
-}));
+}))
 
 const EmptyState = ({
   title,
@@ -53,7 +53,7 @@ const EmptyState = ({
   primaryActionLabel,
   handlePrimaryAction,
 }: Props) => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.paper}>
       <img className={classes.image} src={image} alt="Não encontrado" />
@@ -83,7 +83,7 @@ const EmptyState = ({
         <AddIcon />
       </Fab>
     </div>
-  );
-};
+  )
+}
 
-export default EmptyState;
+export default EmptyState
