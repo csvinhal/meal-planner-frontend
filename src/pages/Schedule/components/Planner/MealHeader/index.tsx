@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import React from 'react'
+import { MealType } from '@models/meals'
+import React, { memo, useMemo } from 'react'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -25,11 +26,30 @@ const useStyles = makeStyles((theme) =>
 )
 
 interface Props {
-  name: string
+  mealType: number
 }
 
-const MealHeader = ({ name }: Props) => {
+const MealHeader = ({ mealType }: Props) => {
   const classes = useStyles()
+  const name = useMemo(() => {
+    switch (mealType) {
+      case MealType.BREAKFAST:
+        return 'BREAKFAST'
+      case MealType.SNACK:
+        return 'SNACK'
+      case MealType.LUNCH:
+        return 'LUNCH'
+      case MealType.AFTERNOON_SNACK:
+        return 'AFTERNOON SNACK'
+      case MealType.DINNER:
+        return 'DINNER'
+      case MealType.SUPPER:
+        return 'SUPPER'
+      default:
+        return ''
+    }
+  }, [mealType])
+
   return (
     <div className={classes.name}>
       <Typography
@@ -43,4 +63,4 @@ const MealHeader = ({ name }: Props) => {
   )
 }
 
-export default MealHeader
+export default memo(MealHeader)
