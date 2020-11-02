@@ -1,6 +1,6 @@
 import { Recipe } from '@models/recipes'
 import { deleteRecipe, getRecipes } from '@shared/recipesApi'
-import { useEffect, useReducer } from 'react'
+import { useCallback, useReducer } from 'react'
 
 export interface State {
   loading: boolean
@@ -100,7 +100,7 @@ export const getRecipesSuccess = (recipes: Recipe[]): RecipesActionTypes => ({
 const useRecipesHooks = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  const fetchRecipes = async () => {
+  const fetchRecipes = useCallback(async () => {
     try {
       dispatch(getRecipesRequest())
       const data = await getRecipes()
@@ -108,7 +108,7 @@ const useRecipesHooks = () => {
     } catch (err) {
       dispatch(recipesFailureRequest(err.error))
     }
-  }
+  }, [dispatch])
 
   const deleteAndRefetch = async (id: string) => {
     try {
@@ -120,10 +120,6 @@ const useRecipesHooks = () => {
       dispatch(recipesFailureRequest(err.error))
     }
   }
-
-  useEffect(() => {
-    fetchRecipes()
-  }, [dispatch])
 
   return {
     state,

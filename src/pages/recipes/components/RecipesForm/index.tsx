@@ -1,13 +1,4 @@
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  Input,
-  InputLabel,
-  Paper,
-  Typography,
-} from '@material-ui/core'
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Recipe, RecipesFormInput } from '@models/recipes'
 import React, { memo } from 'react'
@@ -21,11 +12,13 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: 560,
     },
   },
-  form: {
-    marginTop: theme.spacing(2),
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+  fieldsGrid: {
+    marginBottom: theme.spacing(4),
   },
   buttonContainer: {
-    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
   },
   buttonBack: {
@@ -41,54 +34,45 @@ interface Props {
 
 const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
   const classes = useStyles()
-  const { register, handleSubmit, errors, setValue } = useForm<
-    RecipesFormInput
-  >()
-
-  if (recipe) {
-    setValue('recipeName', recipe.recipeName)
-    setValue('description', recipe.description)
-  }
+  const { register, handleSubmit, errors } = useForm<RecipesFormInput>({
+    defaultValues: {
+      recipeName: recipe?.recipeName,
+      description: recipe?.description,
+    },
+  })
 
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h3" component="h1">
+      <Typography className={classes.title} variant="h3" component="h1">
         Receitas
       </Typography>
-      <form
-        className={classes.form}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Grid container spacing={3}>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <Grid className={classes.fieldsGrid} container spacing={3}>
           <Grid item xs={12}>
-            <FormControl fullWidth error={!!errors.recipeName}>
-              <InputLabel htmlFor="ff-name">Nome</InputLabel>
-              <Input
-                id="ff-name"
-                name="recipeName"
-                aria-describedby="ht-name"
-                inputRef={register({
-                  required: { value: true, message: 'O campo é obrigatório' },
-                })}
-              />
-              {errors.recipeName ? (
-                <FormHelperText id="ht-name" error>
-                  {errors?.recipeName?.message}
-                </FormHelperText>
-              ) : null}
-            </FormControl>
+            <TextField
+              id="ff-name"
+              name="recipeName"
+              label="Nome"
+              inputRef={register({
+                required: { value: true, message: 'O campo é obrigatório' },
+              })}
+              fullWidth
+              error={!!errors.description}
+              helperText={errors.recipeName ? errors.recipeName.message : ''}
+            />
           </Grid>
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="ff-description">Descrição</InputLabel>
-              <Input
-                id="ff-description"
-                name="description"
-                inputRef={register()}
-              />
-            </FormControl>
+            <TextField
+              id="ff-description"
+              name="description"
+              label="Descrição"
+              inputRef={register({
+                required: { value: true, message: 'O campo é obrigatório' },
+              })}
+              fullWidth
+              error={!!errors.description}
+              helperText={errors.description ? errors.description.message : ''}
+            />
           </Grid>
         </Grid>
         <div className={classes.buttonContainer}>
@@ -110,11 +94,7 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
 }
 
 RecipesForm.defaultProps = {
-  recipe: {
-    _id: '',
-    recipeName: '',
-    description: '',
-  },
+  recipe: {},
 }
 
 export default memo(RecipesForm)

@@ -1,70 +1,65 @@
 import Layout from '@containers/Layout'
-import { Recipe, RecipesFormInput } from '@models/recipes'
+import { RecipesFormInput } from '@models/recipes'
 import { actions as loaderActions } from '@reducers/loading'
 import { actions as toastActions } from '@reducers/toast'
-import { createRecipe, getRecipe, updateRecipe } from '@shared/recipesApi'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import RecipeFormLoader from '../components/RecipeFormLoader'
 import RecipesForm from '../components/RecipesForm'
+import useRecipeHooks from '../hooks/recipe-hooks'
 
 const RecipesFormPage = () => {
   const dispatch = useDispatch()
+  const {
+    state: { loading, recipe },
+    effect: { fetchRecipe, submitRecipe },
+  } = useRecipeHooks()
   const history = useHistory()
-  const [recipe, setRecipe] = useState<Recipe>()
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      dispatch(loaderActions.showLoader())
-      if (id) {
-        const { data } = await getRecipe(id)
-        setRecipe(data)
-      }
-      dispatch(loaderActions.closeLoader())
+    if (id) {
+      fetchRecipe(id)
     }
-    fetchRecipe()
-  }, [id, setRecipe, dispatch])
+  }, [id, fetchRecipe])
 
   const handleSubmit = useCallback(
     async (form: RecipesFormInput) => {
       dispatch(loaderActions.showLoader())
-      if (id) {
-        await updateRecipe(id, form)
-        dispatch(
-          toastActions.showMessage({
-            severity: 'success',
-            message: 'Receita atualizada com sucesso!',
-          }),
-        )
-      } else {
-        await createRecipe(form)
-        dispatch(
-          toastActions.showMessage({
-            severity: 'success',
-            message: 'Receita salva com sucesso!',
-          }),
-        )
-      }
+
+      await submitRecipe(form, id)
+      dispatch(
+        toastActions.showMessage({
+          severity: 'success',
+          message: 'Receita salva com sucesso!',
+        }),
+      )
       dispatch(loaderActions.closeLoader())
       history.push('/recipes')
     },
-    [id, dispatch, history],
+    [id, dispatch, history, submitRecipe],
   )
 
   const handleGoBack = useCallback(() => {
     history.push('/recipes')
   }, [history])
 
-  return (
-    <Layout>
+  let content
+
+  if (loading) {
+    content = <RecipeFormLoader />
+  } else {
+    content = (
       <RecipesForm
         recipe={recipe}
         onGoBack={handleGoBack}
         onSubmit={handleSubmit}
       />
-    </Layout>
-  )
+    )
+  }
+
+  return <Layout>{content}</Layout>
 }
 
 export default RecipesFormPage

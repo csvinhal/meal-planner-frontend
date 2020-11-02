@@ -1,18 +1,18 @@
 import FetchLoading from '@components/FetchLoading'
 import Layout from '@containers/Layout'
 import { actions as toastActions } from '@reducers/toast'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import openDialog from '../../../services/dialogService'
 import RecipeEmptyState from '../components/RecipeEmptyState'
 import RecipeList from '../components/RecipeList'
-import useRecipesHooks from '../hooks'
+import useRecipesHooks from '../hooks/recipes-hooks'
 
 const RecipesListPage = () => {
   const {
     state: { loading, recipes },
-    effect: { deleteAndRefetch },
+    effect: { fetchRecipes, deleteAndRefetch },
   } = useRecipesHooks()
   const history = useHistory()
   const dispatch = useDispatch()
@@ -36,6 +36,10 @@ const RecipesListPage = () => {
     },
     [deleteAndRefetch, dispatch],
   )
+
+  useEffect(() => {
+    fetchRecipes()
+  }, [fetchRecipes])
 
   let content
 

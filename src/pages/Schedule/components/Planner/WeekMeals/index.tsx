@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: 'auto',
     opacity: '0.5',
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
 }))
 
