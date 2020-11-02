@@ -30,7 +30,7 @@ const RecipeFormLoader = () => {
   return (
     <Paper className={classes.paper}>
       <Typography variant="h3" component="h1">
-        <Skeleton animation="wave" width="40%" />
+        <Skeleton animation="wave" width="180px" />
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -44,11 +44,11 @@ const RecipeFormLoader = () => {
         </Grid>
       </Grid>
       <div className={classes.buttonContainer}>
-        <Skeleton animation="wave" width="20%" height={36} />
+        <Skeleton animation="wave" width="110px" height={36} />
         <Skeleton
           className={classes.buttonBack}
           animation="wave"
-          width="20%"
+          width="110px"
           height={36}
         />
       </div>

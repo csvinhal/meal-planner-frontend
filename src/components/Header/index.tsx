@@ -8,7 +8,6 @@ interface Props {
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
 }))

@@ -1,4 +1,3 @@
-import FetchLoading from '@components/FetchLoading'
 import Layout from '@containers/Layout'
 import { actions as toastActions } from '@reducers/toast'
 import React, { useCallback, useEffect } from 'react'
@@ -7,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import openDialog from '../../../services/dialogService'
 import RecipeEmptyState from '../components/RecipeEmptyState'
 import RecipeList from '../components/RecipeList'
+import RecipeListLoader from '../components/RecipeListLoader'
 import useRecipesHooks from '../hooks/recipes-hooks'
 
 const RecipesListPage = () => {
@@ -44,7 +44,7 @@ const RecipesListPage = () => {
   let content
 
   if (loading) {
-    content = <FetchLoading />
+    content = <RecipeListLoader />
   } else if (recipes?.length) {
     content = (
       <RecipeList

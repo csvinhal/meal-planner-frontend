@@ -7,16 +7,12 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import { Recipe } from '@models/recipes'
 import React, { memo, useCallback } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 interface Props {
-  recipe: {
-    _id: string
-    recipeName: string
-    image: string
-    description: string
-  }
+  recipe: Recipe
   handleRemove: (id: string) => void
 }
 
@@ -27,10 +23,10 @@ const useStyles = makeStyles((theme) =>
       margin: 'auto',
     },
     media: {
-      height: 140,
+      height: 112,
       backgroundColor: theme.palette.background.default,
-      backgroundPosition: 'bottom center',
-      backgroundSize: 'contain',
+      backgroundPosition: 'center center',
+      backgroundSize: 112,
     },
   }),
 )

@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) =>
     media: {
       height: 100,
       backgroundColor: theme.palette.background.default,
-      backgroundPosition: 'bottom center',
-      backgroundSize: 'contain',
+      backgroundPosition: 'center center',
+      backgroundSize: 100,
     },
   }),
 )
