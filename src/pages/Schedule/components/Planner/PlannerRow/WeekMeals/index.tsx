@@ -1,8 +1,8 @@
-import meal from '@assets/images/breakfast.svg'
-import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { ScheduleDaysOfWeek } from '@models/schedule'
-import React, { memo } from 'react'
+import React, { useMemo } from 'react'
+import EmptyMeal from './EmptyMeal'
+import MealOfDay from './MealOfDay'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     paddingLeft: theme.spacing(1),
     borderLeft: '1px solid',
-    textAlign: 'center',
   },
   cols: {
     flex: 1,
@@ -43,22 +42,22 @@ interface Props {
 
 const WeekMeals = ({ weekDays }: Props) => {
   const classes = useStyles()
-  return (
-    <div className={classes.root}>
-      {Object.keys(weekDays).map((weekDay, i) => {
+  const items = useMemo(
+    () =>
+      Object.keys(weekDays).map((weekDay, i) => {
+        const meal = weekDays[weekDay]
+
         return (
           <div key={i} className={classes.cols}>
-            <div className={classes.emptyMeal}>
-              <img className={classes.svgMeal} src={meal} alt="Meal" />
-              <Typography variant="subtitle1">
-                {weekDays[weekDay]?.recipe.recipeName}
-              </Typography>
-            </div>
+            {meal ? <MealOfDay meal={meal} /> : <EmptyMeal />}
           </div>
         )
-      })}
-    </div>
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [weekDays],
   )
+
+  return <div className={classes.root}>{items}</div>
 }
 
-export default memo(WeekMeals)
+export default WeekMeals

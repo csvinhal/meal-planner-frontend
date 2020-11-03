@@ -12,9 +12,6 @@ import { Skeleton } from '@material-ui/lab'
 import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
-  header: {
-    marginBottom: theme.spacing(1),
-  },
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
@@ -37,7 +34,7 @@ const RecipeListLoader = () => {
   const classes = useStyles()
   return (
     <>
-      <Typography className={classes.header} variant="h4" component="h1">
+      <Typography variant="h4" component="h1" gutterBottom>
         <Skeleton width="180px" />
       </Typography>
       <Paper elevation={2} className={classes.paper}>

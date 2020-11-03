@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginTop: theme.spacing(1),
-    textAlign: 'center',
   },
   button: {
     marginTop: theme.spacing(1),
@@ -41,7 +40,12 @@ const PageNotFound = () => {
         src={notFound}
         alt="Página não encontrada"
       />
-      <Typography className={classes.title} variant="h6" component="h1">
+      <Typography
+        className={classes.title}
+        variant="h6"
+        component="h1"
+        align="center"
+      >
         Ops! A página que está procurando não existe!
       </Typography>
       <Button

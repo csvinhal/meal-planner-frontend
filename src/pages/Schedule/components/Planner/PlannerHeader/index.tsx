@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const WeekHeader = () => {
+const PlannerHeader = () => {
   const classes = useStyles()
 
   return (
@@ -49,4 +49,4 @@ const WeekHeader = () => {
   )
 }
 
-export default WeekHeader
+export default PlannerHeader
