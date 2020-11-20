@@ -1,6 +1,6 @@
-import { Recipe } from '@models/recipes'
-import { deleteRecipe, getRecipes } from '@shared/recipesApi'
+import { Recipe } from '@models/recipes/recipe'
 import { useCallback, useReducer } from 'react'
+import { deleteRecipe, getRecipes } from '@api/recipesApi'
 
 export interface State {
   loading: boolean

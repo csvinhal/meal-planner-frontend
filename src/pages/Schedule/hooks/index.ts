@@ -1,6 +1,6 @@
 import { Schedule } from '@models/schedule'
-import { getSchedule } from '@shared/scheduleApi'
 import { useEffect, useReducer } from 'react'
+import { getSchedule } from '@api/scheduleApi'
 
 export interface State {
   loading: boolean

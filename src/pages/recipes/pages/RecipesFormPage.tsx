@@ -1,5 +1,5 @@
 import Layout from '@containers/Layout'
-import { RecipesFormInput } from '@models/recipes'
+import { RecipesInput } from '@models/recipes/recipe'
 import { actions as loaderActions } from '@reducers/loading'
 import { actions as toastActions } from '@reducers/toast'
 import React, { useCallback, useEffect } from 'react'
@@ -25,7 +25,7 @@ const RecipesFormPage = () => {
   }, [id, fetchRecipe])
 
   const handleSubmit = useCallback(
-    async (form: RecipesFormInput) => {
+    async (form: RecipesInput) => {
       dispatch(loaderActions.showLoader())
 
       await submitRecipe(form, id)

@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify'
-import Axios from '../../shared/requestsConfig'
+import Axios from '../../api/requestsConfig'
 import { AUTH_ONLY } from '../types'
 
 const requireLogin = async (to: any, from: any, next: any) => {

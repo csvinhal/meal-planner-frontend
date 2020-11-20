@@ -1,5 +1,5 @@
-import { Recipe } from '@models/recipes'
-import { createRecipe, getRecipe, updateRecipe } from '@shared/recipesApi'
+import { createRecipe, getRecipe, updateRecipe } from '@api/recipesApi'
+import { Recipe, RecipesInput } from '@models/recipes/recipe'
 import { useCallback, useReducer } from 'react'
 
 export interface State {
@@ -112,13 +112,16 @@ const useRecipeHooks = () => {
     [dispatch],
   )
 
-  const submitRecipe = useCallback(async (recipe: Recipe, id?: string) => {
-    if (id) {
-      await updateRecipe(id, recipe)
-    } else {
-      await createRecipe(recipe)
-    }
-  }, [])
+  const submitRecipe = useCallback(
+    async (recipe: RecipesInput, id?: string) => {
+      if (id) {
+        await updateRecipe(id, recipe)
+      } else {
+        await createRecipe(recipe)
+      }
+    },
+    [],
+  )
 
   return {
     state,

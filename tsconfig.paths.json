@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@api/*": ["./src/api/*"],
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@containers/*": ["./src/containers/*"],
-      "@shared/*": ["./src/shared/*"],
       "@models/*": ["./src/models/*"],
       "@reducers/*": ["./src/reducers/*"]
     }

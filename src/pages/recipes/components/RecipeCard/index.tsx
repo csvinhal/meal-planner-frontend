@@ -1,4 +1,3 @@
-import imageNotFound from '@assets/images/image-not-found.svg'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -7,8 +6,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { Recipe } from '@models/recipes'
-import React, { memo, useCallback } from 'react'
+import { Recipe } from '@models/recipes/recipe'
+import React, { memo, useCallback, useMemo } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 interface Props {
@@ -26,7 +25,6 @@ const useStyles = makeStyles((theme) =>
       height: 112,
       backgroundColor: theme.palette.background.default,
       backgroundPosition: 'center center',
-      backgroundSize: 112,
     },
   }),
 )
@@ -35,7 +33,6 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
   const classes = useStyles()
   const { path } = useRouteMatch()
   const history = useHistory()
-
   const handleEdit = useCallback(
     (url) => {
       history.push(url)
@@ -48,11 +45,11 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={imageNotFound}
+          image={`data:image/png;base64, ${recipe.recipeImage}`}
           title={`Receita de ${recipe.recipeName}`}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h6" component="h2">
             {recipe.recipeName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -72,7 +69,7 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
         <Button
           size="small"
           variant="outlined"
-          onClick={() => handleRemove(recipe._id)}
+          onClick={() => handleRemove(recipe._id as string)}
         >
           Remover
         </Button>

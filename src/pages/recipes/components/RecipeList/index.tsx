@@ -2,7 +2,7 @@ import Header from '@components/Header'
 import { Button, Fab, Grid, Hidden, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
-import { Recipe } from '@models/recipes'
+import { Recipe } from '@models/recipes/recipe'
 import React from 'react'
 import RecipeCard from '../RecipeCard'
 
@@ -48,7 +48,7 @@ const RecipeList = ({ recipes, handlerAdd, handleRemove }: Props) => {
             <Grid key={recipe._id} item xs={12} sm={6} md={4} lg={3}>
               <RecipeCard
                 recipe={recipe}
-                handleRemove={() => handleRemove(recipe._id)}
+                handleRemove={() => handleRemove(recipe._id as string)}
               />
             </Grid>
           ))}

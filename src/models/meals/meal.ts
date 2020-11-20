@@ -1,4 +1,4 @@
-import { Recipe } from '@models/recipes'
+import { Recipe } from '@models/recipes/recipe'
 
 export interface Meal {
   _id: string

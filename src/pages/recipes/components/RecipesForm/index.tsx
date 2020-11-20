@@ -1,7 +1,8 @@
 import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Recipe, RecipesFormInput } from '@models/recipes'
-import React, { memo } from 'react'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import { Recipe, RecipesFormInput, RecipesInput } from '@models/recipes/recipe'
+import React, { memo, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,19 @@ const useStyles = makeStyles((theme) => ({
   fieldsGrid: {
     marginBottom: theme.spacing(4),
   },
+  inputFile: {
+    display: 'none',
+  },
+  imageContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexBasis: 'auto',
+  },
+  recipeImage: {
+    height: '8rem',
+    width: 'auto',
+    marginBottom: theme.spacing(1),
+  },
   buttonContainer: {
     marginBottom: theme.spacing(2),
   },
@@ -29,11 +43,16 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   recipe?: Recipe
   onGoBack: () => void
-  onSubmit: (form: RecipesFormInput) => void
+  onSubmit: (form: RecipesInput) => void
 }
 
 const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
   const classes = useStyles()
+  const inputFileRef = useRef<HTMLInputElement>(null)
+  const [recipeImage, setRecipeImage] = useState<File>()
+  const [recipeImagePreview, setRecipeImagePreview] = useState<string>(
+    recipe?.recipeImage ? `data:image/png;base64, ${recipe.recipeImage}` : '',
+  )
   const { register, handleSubmit, errors } = useForm<RecipesFormInput>({
     defaultValues: {
       recipeName: recipe?.recipeName,
@@ -41,12 +60,38 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
     },
   })
 
+  const imagePreview = useMemo(
+    () =>
+      recipeImagePreview ? (
+        <div>
+          <img
+            className={classes.recipeImage}
+            src={recipeImagePreview}
+            alt="Imagem da receita"
+          />
+        </div>
+      ) : (
+        ''
+      ),
+    [classes.recipeImage, recipeImagePreview],
+  )
+
   return (
     <Paper className={classes.paper}>
       <Typography className={classes.title} variant="h3" component="h1">
         Receitas
       </Typography>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(({ recipeName, description }) =>
+          onSubmit({
+            recipeName,
+            description,
+            recipeImage,
+          }),
+        )}
+      >
         <Grid className={classes.fieldsGrid} container spacing={3}>
           <Grid item xs={12}>
             <TextField
@@ -72,6 +117,38 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
               fullWidth
               error={!!errors.description}
               helperText={errors.description ? errors.description.message : ''}
+            />
+          </Grid>
+          <Grid item xs={12} className={classes.imageContainer}>
+            {imagePreview}
+
+            <Button
+              variant="contained"
+              color="default"
+              startIcon={<CloudUploadIcon />}
+              onClick={() => inputFileRef.current?.click()}
+            >
+              Selecionar foto
+            </Button>
+            <input
+              className={classes.inputFile}
+              id="ff-image"
+              name="image"
+              type="file"
+              accept="image/*"
+              ref={inputFileRef}
+              onChange={(e) => {
+                const files = e.target?.files as FileList
+                setRecipeImage(files[0])
+
+                const reader = new FileReader()
+
+                reader.onloadend = (event) => {
+                  setRecipeImagePreview(event.target?.result as string)
+                }
+
+                reader.readAsDataURL(files[0])
+              }}
             />
           </Grid>
         </Grid>

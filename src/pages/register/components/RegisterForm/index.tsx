@@ -57,7 +57,9 @@ interface Props {
 
 const RegisterForm = ({ onGoToSignIn, onSubmit }: Props) => {
   const classes = useStyles()
-  const { register, handleSubmit, errors, getValues } = useForm<RegisterFormInput>()
+  const { register, handleSubmit, errors, getValues } = useForm<
+    RegisterFormInput
+  >()
 
   const isUnique = useCallback(
     (value: string) => {
