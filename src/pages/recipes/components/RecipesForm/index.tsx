@@ -48,8 +48,7 @@ interface Props {
 
 const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
   const classes = useStyles()
-  const inputFileRef = useRef<HTMLInputElement>(null)
-  const [recipeImage, setRecipeImage] = useState<File>()
+  const inputFileRef = useRef<HTMLInputElement | null>(null)
   const [recipeImagePreview, setRecipeImagePreview] = useState<string>(
     recipe?.recipeImage ? `data:image/png;base64, ${recipe.recipeImage}` : '',
   )
@@ -84,11 +83,11 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
       <form
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(({ recipeName, description }) =>
+        onSubmit={handleSubmit(({ recipeName, description, recipeImage }) =>
           onSubmit({
             recipeName,
             description,
-            recipeImage,
+            recipeImage: recipeImage ? (recipeImage[0] as File) : undefined,
           }),
         )}
       >
@@ -133,14 +132,15 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
             <input
               className={classes.inputFile}
               id="ff-image"
-              name="image"
+              name="recipeImage"
               type="file"
               accept="image/*"
-              ref={inputFileRef}
+              ref={(e) => {
+                register(e)
+                inputFileRef.current = e
+              }}
               onChange={(e) => {
                 const files = e.target?.files as FileList
-                setRecipeImage(files[0])
-
                 const reader = new FileReader()
 
                 reader.onloadend = (event) => {

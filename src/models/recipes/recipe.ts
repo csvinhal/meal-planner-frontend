@@ -14,4 +14,5 @@ export interface RecipesInput {
 export interface RecipesFormInput {
   recipeName: string
   description: string
+  recipeImage: FileList
 }
