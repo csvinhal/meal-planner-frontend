@@ -1,5 +1,5 @@
-import Header from '@components/Header'
-import Layout from '@containers/Layout'
+import Header from '@components/Header/Header'
+import Layout from '@components/Layout/Layout'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 import Planner from './components/Planner'

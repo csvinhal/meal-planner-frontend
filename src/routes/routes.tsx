@@ -1,10 +1,10 @@
-import Home from '../pages/Home'
-import Login from '../pages/login/pages/Login'
+import Home from '../pages/Home/Home'
+import Login from '../pages/Login/Login'
+import PageNotFound from '../pages/PageNotFound/PageNotFound'
+import RecipesFormPage from '../pages/Recipes/RecipeForm/RecipesForm'
+import Recipes from '../pages/Recipes/Recipes'
+import Register from '../pages/Register/Register'
 import SchedulePage from '../pages/Schedule'
-import PageNotFound from '../pages/pageNotFound/pages/PageNotFound/PageNotFound'
-import RecipesFormPage from '../pages/recipes/pages/RecipesFormPage'
-import RecipesListPage from '../pages/recipes/pages/RecipesListPage'
-import Register from '../pages/register/pages/Register'
 import { AUTH_ONLY } from './types'
 
 export default () => [
@@ -19,7 +19,7 @@ export default () => [
   {
     path: '/recipes',
     exact: true,
-    component: RecipesListPage,
+    component: Recipes,
     meta: {
       [AUTH_ONLY]: true,
     },

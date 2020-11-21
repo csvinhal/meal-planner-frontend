@@ -1,1 +1,4 @@
-export * from './login-form-input'
+export interface LoginFormInput {
+  username: string
+  password: string
+}

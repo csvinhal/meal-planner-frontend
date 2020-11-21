@@ -1,4 +1,4 @@
-import Loading from '@components/Loading'
+import Loading from '@components/Loading/Loading'
 import React, { useMemo } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GuardedRoute, GuardProvider } from 'react-router-guards'

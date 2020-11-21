@@ -1,9 +1,8 @@
-import Dialog from '@components/DeleteDialog/DeleteDialog'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import './App.scss'
-import Toast from './components/Toast'
+import Toast from './components/Toast/Toast'
 import Router from './routes'
 
 const theme = createMuiTheme({
@@ -23,7 +22,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Toast />
-      <Dialog />
       <div className="App">
         <Router />
       </div>
