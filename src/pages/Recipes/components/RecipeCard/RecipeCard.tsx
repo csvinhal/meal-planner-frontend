@@ -1,3 +1,4 @@
+import imageNotFound from '@assets/images/image-not-found.svg'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -7,7 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { Recipe } from '@models/recipes'
-import React, { memo, useCallback } from 'react'
+import cx from 'clsx'
+import React, { memo, useCallback, useMemo } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 interface Props {
@@ -26,6 +28,9 @@ const useStyles = makeStyles((theme) =>
       backgroundColor: theme.palette.background.default,
       backgroundPosition: 'center center',
     },
+    mediaNotFound: {
+      backgroundSize: '8rem',
+    },
   }),
 )
 
@@ -40,12 +45,22 @@ const RecipeCard = ({ recipe, handleRemove }: Props) => {
     [history],
   )
 
+  const recipeImage = useMemo(
+    () =>
+      recipe.recipeImage
+        ? `data:image/png;base64, ${recipe.recipeImage}`
+        : imageNotFound,
+    [recipe],
+  )
+
   return (
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
-          className={classes.media}
-          image={`data:image/png;base64, ${recipe.recipeImage}`}
+          className={cx(classes.media, {
+            [classes?.mediaNotFound]: !recipe.recipeImage,
+          })}
+          image={recipeImage}
           title={`Receita de ${recipe.recipeName}`}
         />
         <CardContent>

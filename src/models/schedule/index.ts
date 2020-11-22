@@ -12,3 +12,9 @@ export interface Schedule {
   [MealType.DINNER]: ScheduleDaysOfWeek
   [MealType.SUPPER]: ScheduleDaysOfWeek
 }
+
+export interface ScheduleState {
+  loading: boolean
+  schedule: Schedule
+  error: any
+}

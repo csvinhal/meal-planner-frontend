@@ -2,40 +2,43 @@ import Layout from '@components/Layout/Layout'
 import Toast from '@components/Toast/Toast'
 import { RecipesInput } from '@models/recipes'
 import { useLoaderEffects } from '@providers/Loader'
+import { useRecipeEffects, useRecipeState } from '@providers/Recipe'
 import { useToastEffects } from '@providers/Toast'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import RecipeFormLoader from '../components/RecipeFormLoader/RecipeFormLoader'
 import RecipesForm from '../components/RecipesForm/RecipesForm'
-import useRecipeHooks from '../hooks/recipe-hooks'
 
 const RecipesFormContainer = () => {
-  const {
-    state: { loading, recipe },
-    effect: { fetchRecipe, submitRecipe },
-  } = useRecipeHooks()
+  const { loading, recipe } = useRecipeState()
+  const { fetchRecipe, submitRecipe } = useRecipeEffects()
+  const { id } = useParams<{ id: string }>()
   const { showToast } = useToastEffects()
   const { showLoader, closeLoader } = useLoaderEffects()
   const history = useHistory()
-  const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
-    if (id) {
-      fetchRecipe(id)
-    }
-  }, [id, fetchRecipe])
+    fetchRecipe(id)
+  }, [fetchRecipe, id])
 
   const handleSubmit = useCallback(
     async (form: RecipesInput) => {
-      showLoader()
+      try {
+        showLoader()
+        await submitRecipe(form, id)
+        showToast({
+          severity: 'success',
+          message: 'Receita salva com sucesso!',
+        })
 
-      await submitRecipe(form, id)
-      showToast({
-        severity: 'success',
-        message: 'Receita salva com sucesso!',
-      })
+        history.push('/recipes')
+      } catch (e) {
+        showToast({
+          severity: 'error',
+          message: e.message,
+        })
+      }
       closeLoader()
-      history.push('/recipes')
     },
     [id, history, submitRecipe, showToast, showLoader, closeLoader],
   )

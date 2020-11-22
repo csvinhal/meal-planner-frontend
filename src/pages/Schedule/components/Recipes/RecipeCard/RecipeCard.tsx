@@ -6,7 +6,8 @@ import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { Recipe } from '@models/recipes'
-import React from 'react'
+import cx from 'clsx'
+import React, { useMemo } from 'react'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -15,12 +16,16 @@ const useStyles = makeStyles((theme) =>
       marginTop: theme.spacing(1),
       marginRight: 'auto',
       marginLeft: 'auto',
+      marginBottom: theme.spacing(2),
     },
     media: {
       height: 100,
       backgroundColor: theme.palette.background.default,
       backgroundPosition: 'center center',
-      backgroundSize: 100,
+      backgroundSize: 'cover',
+    },
+    mediaNotFound: {
+      backgroundSize: '7rem',
     },
   }),
 )
@@ -32,16 +37,26 @@ interface Props {
 const RecipeCard = ({ recipe }: Props) => {
   const classes = useStyles()
 
+  const recipeImage = useMemo(
+    () =>
+      recipe.recipeImage
+        ? `data:image/png;base64, ${recipe.recipeImage}`
+        : imageNotFound,
+    [recipe],
+  )
+
   return (
     <Card className={classes.root} draggable>
       <CardActionArea>
         <CardMedia
-          className={classes.media}
-          image={imageNotFound}
+          className={cx(classes.media, {
+            [classes?.mediaNotFound]: !recipe.recipeImage,
+          })}
+          image={recipeImage}
           title={`Receita de ${recipe.recipeName}`}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="subtitle1" component="span">
             {recipe.recipeName}
           </Typography>
         </CardContent>

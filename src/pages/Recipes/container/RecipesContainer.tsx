@@ -1,19 +1,17 @@
 import DeleteDialog from '@components/DeleteDialog/DeleteDialog'
 import Layout from '@components/Layout/Layout'
 import { useDeleteDialogEffects } from '@providers/DeleteDialog'
+import { useRecipesEffects, useRecipesState } from '@providers/Recipes'
 import { useToastEffects } from '@providers/Toast'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import RecipeEmptyState from '../components/RecipeEmptyState/RecipeEmptyState'
 import RecipeList from '../components/RecipeList/RecipeList'
 import RecipeListLoader from '../components/RecipeListLoader/RecipeListLoader'
-import useRecipesHooks from '../hooks/recipes-hooks'
 
 const RecipesContainer = () => {
-  const {
-    state: { loading, recipes },
-    effect: { fetchRecipes, deleteAndRefetch },
-  } = useRecipesHooks()
+  const { loading, recipes } = useRecipesState()
+  const { fetchRecipes, deleteAndRefetch } = useRecipesEffects()
   const history = useHistory()
   const { showDialog, closeDialog } = useDeleteDialogEffects()
   const { showToast } = useToastEffects()

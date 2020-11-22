@@ -1,10 +1,10 @@
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
 import PageNotFound from '../pages/PageNotFound/PageNotFound'
-import RecipesFormPage from '../pages/Recipes/RecipeForm/RecipesForm'
+import RecipesForm from '../pages/Recipes/RecipeForm/RecipeForm'
 import Recipes from '../pages/Recipes/Recipes'
 import Register from '../pages/Register/Register'
-import SchedulePage from '../pages/Schedule'
+import SchedulePage from '../pages/Schedule/Schedule'
 import { AUTH_ONLY } from './types'
 
 export default () => [
@@ -27,7 +27,7 @@ export default () => [
   {
     path: '/recipes/add',
     exact: true,
-    component: RecipesFormPage,
+    component: RecipesForm,
     meta: {
       [AUTH_ONLY]: true,
     },
@@ -35,7 +35,7 @@ export default () => [
   {
     path: '/recipes/:id',
     exact: true,
-    component: RecipesFormPage,
+    component: RecipesForm,
     meta: {
       [AUTH_ONLY]: true,
     },

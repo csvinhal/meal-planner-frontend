@@ -40,6 +40,7 @@
     "react/no-array-index-key": "off",
     "@typescript-eslint/explicit-module-boundary-types": ["off"],
     "no-underscore-dangle": ["off"],
-    "react/jsx-props-no-spreading": ["off"]
+    "react/jsx-props-no-spreading": ["off"],
+    "import/prefer-default-export": ["off"]
   }
 }

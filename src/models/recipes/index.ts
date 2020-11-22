@@ -16,3 +16,15 @@ export interface RecipesFormInput {
   description: string
   recipeImage: FileList
 }
+
+export interface RecipesState {
+  recipes: Recipe[]
+  loading: boolean
+  error: any
+}
+
+export interface RecipeState {
+  recipe: Recipe
+  loading: boolean
+  error: any
+}
