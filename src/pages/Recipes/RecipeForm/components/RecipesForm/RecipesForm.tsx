@@ -1,7 +1,15 @@
-import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core'
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import { Recipe, RecipesFormInput, RecipesInput } from '@models/recipes/recipe'
+import { Recipe, RecipesFormInput, RecipesInput } from '@models/recipes'
 import React, { memo, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -121,35 +129,40 @@ const RecipesForm = ({ recipe, onGoBack, onSubmit }: Props) => {
           <Grid item xs={12} className={classes.imageContainer}>
             {imagePreview}
 
-            <Button
-              variant="contained"
-              color="default"
-              startIcon={<CloudUploadIcon />}
-              onClick={() => inputFileRef.current?.click()}
-            >
-              Selecionar foto
-            </Button>
-            <input
-              className={classes.inputFile}
-              id="ff-image"
-              name="recipeImage"
-              type="file"
-              accept="image/*"
-              ref={(e) => {
-                register(e)
-                inputFileRef.current = e
-              }}
-              onChange={(e) => {
-                const files = e.target?.files as FileList
-                const reader = new FileReader()
+            <FormControl>
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<CloudUploadIcon />}
+                onClick={() => inputFileRef.current?.click()}
+              >
+                Selecionar foto
+              </Button>
+              <input
+                className={classes.inputFile}
+                id="ff-image"
+                name="recipeImage"
+                type="file"
+                accept="image/*"
+                ref={(e) => {
+                  register(e, { required: true })
+                  inputFileRef.current = e
+                }}
+                onChange={(e) => {
+                  const files = e.target?.files as FileList
+                  const reader = new FileReader()
 
-                reader.onloadend = (event) => {
-                  setRecipeImagePreview(event.target?.result as string)
-                }
+                  reader.onloadend = (event) => {
+                    setRecipeImagePreview(event.target?.result as string)
+                  }
 
-                reader.readAsDataURL(files[0])
-              }}
-            />
+                  reader.readAsDataURL(files[0])
+                }}
+              />
+              {errors.recipeImage ? (
+                <FormHelperText error>O campo é obrigatório</FormHelperText>
+              ) : null}
+            </FormControl>
           </Grid>
         </Grid>
         <div className={classes.buttonContainer}>

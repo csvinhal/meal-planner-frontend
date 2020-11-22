@@ -1,10 +1,8 @@
 import Amplify from 'aws-amplify'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import App from './App'
 import './index.scss'
-import store from './reducers'
 import * as serviceWorker from './serviceWorker'
 
 Amplify.configure({
@@ -25,9 +23,7 @@ Amplify.configure({
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root'),
 )

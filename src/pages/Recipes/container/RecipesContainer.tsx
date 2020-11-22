@@ -1,12 +1,12 @@
 import DeleteDialog from '@components/DeleteDialog/DeleteDialog'
+import Layout from '@components/Layout/Layout'
 import { useDeleteDialogEffects } from '@providers/DeleteDialog'
-import { actions as toastActions } from '@reducers/toast'
+import { useToastEffects } from '@providers/Toast'
 import React, { useCallback, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import RecipeEmptyState from '../components/RecipeEmptyState'
-import RecipeList from '../components/RecipeList'
-import RecipeListLoader from '../components/RecipeListLoader'
+import RecipeEmptyState from '../components/RecipeEmptyState/RecipeEmptyState'
+import RecipeList from '../components/RecipeList/RecipeList'
+import RecipeListLoader from '../components/RecipeListLoader/RecipeListLoader'
 import useRecipesHooks from '../hooks/recipes-hooks'
 
 const RecipesContainer = () => {
@@ -15,8 +15,8 @@ const RecipesContainer = () => {
     effect: { fetchRecipes, deleteAndRefetch },
   } = useRecipesHooks()
   const history = useHistory()
-  const dispatch = useDispatch()
   const { showDialog, closeDialog } = useDeleteDialogEffects()
+  const { showToast } = useToastEffects()
 
   const handlerAdd = useCallback(() => {
     history.push('/recipes/add')
@@ -25,15 +25,13 @@ const RecipesContainer = () => {
   const handleConfirmDelete = useCallback(
     async (id) => {
       await deleteAndRefetch(id)
-      dispatch(
-        toastActions.showMessage({
-          severity: 'success',
-          message: 'Receita deletada com sucesso!',
-        }),
-      )
+      showToast({
+        severity: 'success',
+        message: 'Receita deletada com sucesso!',
+      })
       closeDialog()
     },
-    [deleteAndRefetch, dispatch, closeDialog],
+    [deleteAndRefetch, closeDialog, showToast],
   )
 
   const handleRemove = useCallback(
@@ -67,10 +65,10 @@ const RecipesContainer = () => {
   }
 
   return (
-    <>
+    <Layout>
       {content}
       <DeleteDialog />
-    </>
+    </Layout>
   )
 }
 

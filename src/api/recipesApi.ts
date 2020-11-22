@@ -1,4 +1,4 @@
-import { Recipe, RecipesInput } from '@models/recipes/recipe'
+import { Recipe, RecipesInput } from '@models/recipes'
 import Axios from './requestsConfig'
 
 export const getRecipes = () => {

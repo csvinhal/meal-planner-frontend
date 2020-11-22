@@ -1,6 +1,7 @@
 import { Backdrop, CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { FunctionComponent } from 'react'
+import { useLoaderState } from '@providers/Loader'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -9,11 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Loading: FunctionComponent = () => {
+const Loading = () => {
   const classes = useStyles()
+  const { open } = useLoaderState()
 
   return (
-    <Backdrop className={classes.backdrop} open>
+    <Backdrop className={classes.backdrop} open={open}>
       <CircularProgress color="inherit" />
     </Backdrop>
   )

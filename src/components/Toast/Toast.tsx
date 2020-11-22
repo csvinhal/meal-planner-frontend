@@ -1,15 +1,11 @@
 import { Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import { RootReducer } from '@reducers/index'
-import { actions } from '@reducers/toast'
+import { useToastEffects, useToastState } from '@providers/Toast'
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 const Toast = () => {
-  const { open, message, severity } = useSelector(
-    (state: RootReducer) => state.toast,
-  )
-  const dispatch = useDispatch()
+  const { open, message, severity } = useToastState()
+  const { closeToast } = useToastEffects()
 
   const handleToastClose = useCallback(
     (event?: React.SyntheticEvent, reason?: string) => {
@@ -17,9 +13,9 @@ const Toast = () => {
         return
       }
 
-      dispatch(actions.closeMessage())
+      closeToast()
     },
-    [dispatch],
+    [closeToast],
   )
   return (
     <Snackbar

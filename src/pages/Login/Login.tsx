@@ -1,14 +1,13 @@
 import { LoginFormInput } from '@models/login'
+import { useToastEffects } from '@providers/Toast'
 import { Auth } from 'aws-amplify'
 import React, { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { actions as toastActions } from '../../reducers/toast'
 import LoginForm from './components/LoginForm'
 
 const Login = () => {
   const history = useHistory()
-  const dispatch = useDispatch()
+  const { showToast } = useToastEffects()
 
   const handleSubmit = useCallback(
     async (form: LoginFormInput) => {
@@ -20,15 +19,13 @@ const Login = () => {
         })
         history.push('/')
       } catch (error) {
-        dispatch(
-          toastActions.showMessage({
-            severity: 'error',
-            message: error.message,
-          }),
-        )
+        showToast({
+          severity: 'error',
+          message: error.message,
+        })
       }
     },
-    [history, dispatch],
+    [history, showToast],
   )
 
   const handleSignUp = useCallback(() => {

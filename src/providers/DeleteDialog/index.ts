@@ -2,7 +2,7 @@ import { DeleteDialogState, ShowDialogInput } from '@models/dialog'
 import constate from 'constate'
 import { useCallback, useState } from 'react'
 
-const useDialogHook = () => {
+const useDeleteDialogHook = () => {
   const [state, setState] = useState<DeleteDialogState>({
     open: false,
     title: '',
@@ -41,7 +41,7 @@ const useDialogHook = () => {
 }
 
 const [DialogProvider, useDeleteDialogState, useDeleteDialogEffects] = constate(
-  useDialogHook,
+  useDeleteDialogHook,
   (value) => value.state,
   (value) => value.effects,
 )

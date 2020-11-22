@@ -1,4 +1,4 @@
-import { Recipe } from '@models/recipes/recipe'
+import { Recipe } from '@models/recipes'
 import { useCallback, useReducer } from 'react'
 import { deleteRecipe, getRecipes } from '@api/recipesApi'
 

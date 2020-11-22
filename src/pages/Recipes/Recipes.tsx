@@ -1,13 +1,10 @@
-import Layout from '@components/Layout/Layout'
-import React from 'react'
 import { DialogProvider } from '@providers/DeleteDialog'
-import RecipesContainer from './container/recipes'
+import React from 'react'
+import RecipesContainer from './container/RecipesContainer'
 
 const Recipes = () => (
   <DialogProvider>
-    <Layout>
-      <RecipesContainer />
-    </Layout>
+    <RecipesContainer />
   </DialogProvider>
 )
 

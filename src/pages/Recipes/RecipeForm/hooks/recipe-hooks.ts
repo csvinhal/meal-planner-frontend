@@ -1,5 +1,5 @@
 import { createRecipe, getRecipe, updateRecipe } from '@api/recipesApi'
-import { Recipe, RecipesInput } from '@models/recipes/recipe'
+import { Recipe, RecipesInput } from '@models/recipes'
 import { useCallback, useReducer } from 'react'
 
 export interface State {

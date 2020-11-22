@@ -6,8 +6,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { Recipe } from '@models/recipes/recipe'
-import React, { memo, useCallback, useMemo } from 'react'
+import { Recipe } from '@models/recipes'
+import React, { memo, useCallback } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
 interface Props {

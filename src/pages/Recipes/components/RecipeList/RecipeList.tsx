@@ -2,9 +2,9 @@ import Header from '@components/Header/Header'
 import { Button, Fab, Grid, Hidden, Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
-import { Recipe } from '@models/recipes/recipe'
+import { Recipe } from '@models/recipes'
 import React from 'react'
-import RecipeCard from '../RecipeCard'
+import RecipeCard from '../RecipeCard/RecipeCard'
 
 interface Props {
   recipes: Recipe[]

@@ -1,10 +1,9 @@
 import { getRecipes } from '@api/recipesApi'
 import { FormControl, Input, InputLabel } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Recipe } from '@models/recipes/recipe'
-import { actions as loaderActions } from '@reducers/loading'
+import { Recipe } from '@models/recipes'
+import { useLoaderEffects } from '@providers/Loader'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import RecipeCard from './RecipeCard'
 
 const useStyles = makeStyles((theme) => ({
@@ -24,14 +23,14 @@ const useStyles = makeStyles((theme) => ({
 const Recipes = () => {
   const classes = useStyles()
   const [recipes, setRecipes] = useState<Recipe[]>()
-  const dispatch = useDispatch()
+  const { showLoader, closeLoader } = useLoaderEffects()
 
   const fetchRecipes = useCallback(async () => {
-    dispatch(loaderActions.showLoader())
+    showLoader()
     const { data } = await getRecipes()
     setRecipes(data)
-    dispatch(loaderActions.closeLoader())
-  }, [dispatch])
+    closeLoader()
+  }, [showLoader, closeLoader])
 
   useEffect(() => {
     fetchRecipes()
