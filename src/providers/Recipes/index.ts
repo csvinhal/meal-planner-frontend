@@ -4,7 +4,12 @@ import {
   getRecipes,
   updateRecipe,
 } from '@api/recipesApi'
-import { Recipe, RecipesInput, RecipesState } from '@models/recipes'
+import {
+  Recipe,
+  RecipesInput,
+  RecipesParamsInput,
+  RecipesState,
+} from '@models/recipes'
 import constate from 'constate'
 import { useCallback, useState } from 'react'
 
@@ -15,10 +20,10 @@ const useRecipesHook = () => {
     error: null,
   })
 
-  const fetchRecipes = useCallback(async () => {
+  const fetchRecipes = useCallback(async (params?: RecipesParamsInput) => {
     try {
       setState((currentState) => ({ ...currentState, loading: true }))
-      const { data } = await getRecipes()
+      const { data } = await getRecipes(params)
       setState((currentState) => ({
         ...currentState,
         loading: false,

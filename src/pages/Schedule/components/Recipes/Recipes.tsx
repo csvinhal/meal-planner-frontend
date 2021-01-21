@@ -22,7 +22,11 @@ interface Props {
 
 const Recipes = ({ recipes, loading }: Props) => {
   const classes = useStyles()
-  const { register } = useForm<{ recipeName: string }>()
+  const { register, watch } = useForm<{ recipeName: string }>({
+    defaultValues: { recipeName: '' },
+  })
+
+  const recipeNameWatch = watch('recipeName')
 
   const cards = useMemo(() => {
     if (loading) {
@@ -33,11 +37,14 @@ const Recipes = ({ recipes, loading }: Props) => {
         </>
       )
     }
-
-    return recipes?.map((recipe: Recipe) => (
-      <RecipeCard key={recipe._id} recipe={recipe} />
-    ))
-  }, [loading, recipes])
+    return recipes
+      ?.filter((recipe: Recipe) =>
+        recipe.recipeName
+          .toLocaleLowerCase()
+          .includes(recipeNameWatch.toLocaleLowerCase()),
+      )
+      .map((recipe: Recipe) => <RecipeCard key={recipe._id} recipe={recipe} />)
+  }, [loading, recipes, recipeNameWatch])
 
   return (
     <div className={classes.root}>
