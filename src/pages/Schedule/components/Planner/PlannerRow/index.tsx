@@ -27,7 +27,7 @@ const PlannerRow = ({ mealType, weekDays }: Props) => {
   return (
     <div className={clsx(classes.rowWrapper, classes.rowMeal)}>
       <MealHeader mealType={mealType} />
-      <WeekMeals weekDays={weekDays} />
+      <WeekMeals weekDays={weekDays} mealType={mealType} />
     </div>
   )
 }

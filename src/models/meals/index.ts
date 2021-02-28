@@ -1,12 +1,12 @@
 import { Recipe } from '@models/recipes'
 
 export interface Meal {
-  _id: string
+  _id?: string
   date: string
   mealType: number
   recipe: Recipe
-  createAt: string
-  updatedAt: string
+  createAt?: string
+  updatedAt?: string
 }
 
 export enum MealType {

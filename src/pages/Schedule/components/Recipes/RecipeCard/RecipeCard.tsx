@@ -7,7 +7,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { Recipe } from '@models/recipes'
 import cx from 'clsx'
-import React, { useMemo } from 'react'
+import React, { DragEvent, useCallback, useMemo } from 'react'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -45,8 +45,20 @@ const RecipeCard = ({ recipe }: Props) => {
     [recipe],
   )
 
+  const onDrag = useCallback(
+    (event: React.DragEvent<HTMLDivElement>, item: Recipe) => {
+      event.dataTransfer.setData('text', JSON.stringify(item))
+    },
+    [],
+  )
+
+  const onDragRecipe = useCallback(
+    (e: DragEvent<HTMLDivElement>) => onDrag(e, recipe),
+    [recipe, onDrag],
+  )
+
   return (
-    <Card className={classes.root} draggable>
+    <Card className={classes.root} onDragStart={onDragRecipe} draggable>
       <CardActionArea>
         <CardMedia
           className={cx(classes.media, {

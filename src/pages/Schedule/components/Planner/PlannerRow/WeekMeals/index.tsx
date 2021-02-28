@@ -1,6 +1,9 @@
+import { createMeal } from '@api/mealsApi'
 import { makeStyles } from '@material-ui/core/styles'
+import { MealType } from '@models/meals'
+import { Recipe } from '@models/recipes'
 import { ScheduleDaysOfWeek } from '@models/schedule'
-import React, { useMemo } from 'react'
+import React, { DragEvent, useCallback, useMemo, useState } from 'react'
 import EmptyMeal from './EmptyMeal'
 import MealOfDay from './MealOfDay'
 
@@ -38,17 +41,40 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   weekDays: ScheduleDaysOfWeek
+  mealType: MealType
 }
 
-const WeekMeals = ({ weekDays }: Props) => {
+const WeekMeals = ({ weekDays, mealType }: Props) => {
   const classes = useStyles()
+  const [loading, setLoading] = useState(false)
+
+  const onDropRecipe = useCallback(
+    async (event: DragEvent<HTMLDivElement>, date: string) => {
+      event.preventDefault()
+
+      const data = event.dataTransfer.getData('text')
+      const recipe = JSON.parse(data) as Recipe
+
+      await createMeal({ date, recipe, mealType })
+    },
+    [mealType],
+  )
+
   const items = useMemo(
     () =>
       Object.keys(weekDays).map((weekDay, i) => {
+        const onDrop = (e: DragEvent<HTMLDivElement>) =>
+          onDropRecipe(e, weekDay)
+        const onDragOver = (e: DragEvent<HTMLDivElement>) => e.preventDefault()
         const meal = weekDays[weekDay]
 
         return (
-          <div key={i} className={classes.cols}>
+          <div
+            key={i}
+            className={classes.cols}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+          >
             {meal ? <MealOfDay meal={meal} /> : <EmptyMeal />}
           </div>
         )

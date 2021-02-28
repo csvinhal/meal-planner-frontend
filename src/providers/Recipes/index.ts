@@ -1,15 +1,5 @@
-import {
-  createRecipe,
-  deleteRecipe,
-  getRecipes,
-  updateRecipe,
-} from '@api/recipesApi'
-import {
-  Recipe,
-  RecipesInput,
-  RecipesParamsInput,
-  RecipesState,
-} from '@models/recipes'
+import { deleteRecipe, getRecipes } from '@api/recipesApi'
+import { Recipe, RecipesParamsInput, RecipesState } from '@models/recipes'
 import constate from 'constate'
 import { useCallback, useState } from 'react'
 
@@ -57,32 +47,11 @@ const useRecipesHook = () => {
     }
   }, [])
 
-  const submitRecipe = useCallback(
-    async (recipe: RecipesInput, id?: string) => {
-      try {
-        setState((currentState) => ({ ...currentState, loading: true }))
-        if (id) {
-          await updateRecipe(id, recipe)
-        } else {
-          await createRecipe(recipe)
-        }
-        setState((currentState) => ({
-          ...currentState,
-          loading: false,
-        }))
-      } catch (err) {
-        setState((currentState) => ({ ...currentState, error: err }))
-      }
-    },
-    [],
-  )
-
   return {
     state,
     effects: {
       fetchRecipes,
       deleteAndRefetch,
-      submitRecipe,
     },
   }
 }
